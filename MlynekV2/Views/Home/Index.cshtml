@@ -1,0 +1,47 @@
+﻿
+@section Scripts{
+   
+    <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/bundles/jquery")"></script>
+    <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/bundles/bootstrap")"></script>
+    <script src="@System.Web.Optimization.BundleTable.Bundles.ResolveBundleUrl("~/game/js")"></script>
+}
+
+<h1>Witam i zapraszam do świetnej zabawy!</h1>
+<br />
+<label>Pionki biale: </label>
+<select>
+    <option>Czlowiek</option>
+    <option>Komputer</option>
+</select>
+<label>Pionki czarne: </label>
+<select>
+    <option>Czlowiek</option>
+    <option>Komputer</option>
+</select>
+<br />
+<label>Poziom trudności</label>
+<select>
+    <option>level 1</option>
+    <option>level 2</option>
+    <option>level 2</option>
+</select>
+<br />
+<button id="start_button">Start</button>
+<br />
+<br />
+<label id="test_label"></label>
+<div id="pole_gry" style="display:inline-block">
+
+    <div id="lewy_div" style="display:inline-block; position:relative">
+        <img src="..\Resources\Images\lewePoleN.png" alt="plansza" height="200" width="120" id="lewePole" style="z-index:-1">
+    </div>
+    <div id="plansza_div" style="display:inline-block; position:relative">
+        <img src="..\Resources\Images\plansza.png" alt="plansza" height="450" width="450" id="plansza" style="z-index:-1">
+    </div>
+    <div id="prawy_div" style="display:inline-block; position:relative">
+        <img src="..\Resources\Images\prawePoleN.png" alt="plansza" height="200" width="120" id="prawePole" style="z-index:-1">
+    </div>
+</div>
+
+
+
