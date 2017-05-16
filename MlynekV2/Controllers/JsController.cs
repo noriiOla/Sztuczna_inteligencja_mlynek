@@ -18,12 +18,20 @@ namespace MlynekV2.Controllers
             Gra.getInstance().init(gracz1, gracz2);
         }
 
-        public string obsluzRuch(double x, double y, int kolorGracza)
+        public string obsluzRuch(double xNowe, double yNowe, int kolorGracza, double xStare, double yStare)
         {
             //0, 0- niepoprawny ruch
             //x,y - poprawny ruch- miejsce gdzie nalezy postawic pionek
-           Punkt p = Gra.getInstance().obsluzRuch(x, y, kolorGracza);
+            Punkt nowyPunkt = new Punkt(xNowe, yNowe);
+            Punkt staryPunkt = new Punkt(xStare, yStare);
+           WynikRuchu p = Gra.getInstance().obsluzRuch(nowyPunkt, kolorGracza, staryPunkt);
            return new JsonTransformService().SerializeToString(p);
+        }
+
+        public string usunPionek(double x, double y)
+        {
+            Gra.getInstance().usunZPlanszyInformacjeOStarymPunkcie(new Punkt(x, y));
+            return  new JsonTransformService().SerializeToString(new Komunikat("c# usnuniete"));
         }
     }
 }

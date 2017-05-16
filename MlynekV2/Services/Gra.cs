@@ -35,15 +35,14 @@ namespace MlynekV2.Services
         }
 
 
-        public Punkt obsluzRuch(double x, double y, int kolorGracza)
+        public WynikRuchu obsluzRuch(Punkt nowyPunkt, int kolorGracza, Punkt staryPunkt)
         {
             int correctX = -1;
             int correctY = -1;
-            int valueToReturn = 0;
 
             for(int i=0; i<7; i++)
             {
-                if(this.pole.plansza[0, i].x-17 < x && this.pole.plansza[0, i].x + 17 > x)
+                if(this.pole.plansza[0, i].x-17 < nowyPunkt.x && this.pole.plansza[0, i].x + 17 > nowyPunkt.x)
                 {
                     correctY = i;
                 }
@@ -51,7 +50,7 @@ namespace MlynekV2.Services
 
             for (int i = 0; i < 7; i++)
             {
-                if (this.pole.plansza[i, 0].y - 17 < y && this.pole.plansza[i, 0].y + 17 > y)
+                if (this.pole.plansza[i, 0].y - 17 < nowyPunkt.y && this.pole.plansza[i, 0].y + 17 > nowyPunkt.y)
                 {
                     correctX = i;
                 }
@@ -59,11 +58,75 @@ namespace MlynekV2.Services
 
             if(correctX == -1 || correctY == -1)
             {
-                return (new Punkt(0,0));
+                return new WynikRuchu(new Punkt(0,0), false);
             }else
             {
-                return new Punkt(this.pole.plansza[correctX, correctY].x, this.pole.plansza[correctX, correctY].y);
+                this.pole.plansza[correctX, correctY].zajete = true;
+                this.pole.plansza[correctX, correctY].kolorGracza = kolorGracza;
+                usunZPlanszyInformacjeOStarymPunkcie(staryPunkt);
+                // dodaj do planszy pionek/zmien nowe miejsce na zajete (zmien stary (miejsce na planszy na wolne)
+                return new WynikRuchu(new Punkt(this.pole.plansza[correctX, correctY].x, this.pole.plansza[correctX, correctY].y), powstalMlynek(correctX, correctY, kolorGracza));
             }
+        }
+
+        public void usunZPlanszyInformacjeOStarymPunkcie(Punkt staryPunkt)
+        {
+            int correctX = -1;
+            int correctY = -1;
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (this.pole.plansza[0, i].x - 17 < staryPunkt.x && this.pole.plansza[0, i].x + 17 > staryPunkt.x)
+                {
+                    correctY = i;
+                }
+            }
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (this.pole.plansza[i, 0].y - 17 < staryPunkt.y && this.pole.plansza[i, 0].y + 17 > staryPunkt.y)
+                {
+                    correctX = i;
+                }
+            }
+
+            if (correctX != -1 && correctY != -1)
+            {
+                this.pole.plansza[correctX, correctY].zajete = false;
+            }
+        }
+
+        public bool powstalMlynek(int x, int y, int kolorGracza)
+        {
+            int ilosc = 0;
+
+            for(int i=0; i<7; i++)
+            {
+                if(this.pole.plansza[x, i].kolorGracza == kolorGracza)
+                {
+                    ilosc++;
+                    if(ilosc == 3)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            ilosc = 0;
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (this.pole.plansza[i, y].kolorGracza == kolorGracza)
+                {
+                    ilosc++;
+                    if (ilosc == 3)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

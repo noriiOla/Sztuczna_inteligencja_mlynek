@@ -166,10 +166,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Gracz.cs" />
+    <Compile Include="Models\Komunikat.cs" />
     <Compile Include="Models\Pionek.cs" />
     <Compile Include="Models\Pole.cs" />
     <Compile Include="Models\PoleNaPionek.cs" />
     <Compile Include="Models\Punkt.cs" />
+    <Compile Include="Models\WynikRuchu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Gra.cs" />
     <Compile Include="Services\JsonTransformService.cs" />

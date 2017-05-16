@@ -8,7 +8,8 @@ namespace MlynekV2.Models
         public double x { get; set; }
         public double y { get; set; }
         public bool zajete { get; set; }
-        public Pionek pionek { get; set; }
+        //public Pionek pionek { get; set; }
+        public int kolorGracza {get;set;}
 
         public PoleNaPionek(bool dopuszczalne, double x, double y, bool zajete)
         {
