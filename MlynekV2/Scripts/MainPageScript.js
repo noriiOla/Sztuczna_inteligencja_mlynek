@@ -58,7 +58,7 @@
         var bottomPos = imgHeight + posOdGory - wielkoscPionka;
         for (i = 0; i < 9; i++) {
             left: ' + posOdLewej + '; top: ' + posOdGory + ';
-            $('#prawy_div').prepend('<img id="bPionek" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
+            $('#prawy_div').prepend('<img id="bPionek" class="bPionekClass" name="b'+ i +'" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
             posOdGory = posOdGory + 35;
             if (posOdGory >= (bottomPos)) {
                 posOdGory = posPola.top + 10;
@@ -103,7 +103,7 @@
         var imgHeight = $('#lewePole').height();
         var bottomPos = imgHeight + posOdGory - wielkoscPionka;
         for (i = 0; i < 9; i++) {
-            $('#lewy_div').prepend('<img id="cPionek" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
+            $('#lewy_div').prepend('<img id="cPionek" class="cPionekClass" name="c' + i + ' height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
             posOdGory = posOdGory + 35;
             if (posOdGory >= (bottomPos)) {
                 posOdGory = posPola.top + 10;
@@ -164,7 +164,7 @@
                      yNowe: mousePosY,
                      kolorGracza: numerGraczaKtoryMaSieRuszyc,
                      xStare: $(selectedPionek).offset().left + wielkoscPionka/2,
-                     yStare: $(selectedPionek).offset().top + wielkoscPionka/2
+                     yStare: $(selectedPionek).offset().top + wielkoscPionka / 2
                     },
                     success: function (msg) {
                         console.log(msg);         
@@ -223,5 +223,9 @@ window.onload = function () {
     $('#plansza').click(function (event) {
          console.log(event.pageX + " " + event.pageY);
          game.obsluzRuch(event.pageX, event.pageY);
+    })
+
+    $('#usun').click(function (event) {
+        $("[name='c1']").remove();
     })
 }
