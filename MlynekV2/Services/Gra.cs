@@ -35,7 +35,7 @@ namespace MlynekV2.Services
         }
 
 
-        public WynikRuchu obsluzRuch(Punkt nowyPunkt, int kolorGracza, Punkt staryPunkt)
+        public WynikRuchu obsluzRuch(Punkt nowyPunkt, int kolorGracza, Punkt staryPunkt, string nazwaPionka)
         {
             int correctX = -1;
             int correctY = -1;
@@ -63,6 +63,7 @@ namespace MlynekV2.Services
             {
                 this.pole.plansza[correctX, correctY].zajete = true;
                 this.pole.plansza[correctX, correctY].kolorGracza = kolorGracza;
+                this.pole.plansza[correctX, correctY].nazwaPionka = nazwaPionka;
                 usunZPlanszyInformacjeOStarymPunkcie(staryPunkt);
                 // dodaj do planszy pionek/zmien nowe miejsce na zajete (zmien stary (miejsce na planszy na wolne)
                 return new WynikRuchu(new Punkt(this.pole.plansza[correctX, correctY].x, this.pole.plansza[correctX, correctY].y), powstalMlynek(correctX, correctY, kolorGracza));
@@ -93,6 +94,7 @@ namespace MlynekV2.Services
             if (correctX != -1 && correctY != -1)
             {
                 this.pole.plansza[correctX, correctY].zajete = false;
+                this.pole.plansza[correctX, correctY].nazwaPionka = "";
             }
         }
 
@@ -109,6 +111,11 @@ namespace MlynekV2.Services
                     {
                         return true;
                     }
+ 
+                }
+                if (x == 3 && i == 3)
+                {
+                    ilosc = 0;
                 }
             }
 
@@ -123,6 +130,11 @@ namespace MlynekV2.Services
                     {
                         return true;
                     }
+
+                }
+                if (y == 3 && i == 3)
+                {
+                    ilosc = 0;
                 }
             }
 

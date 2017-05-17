@@ -153,6 +153,7 @@
     }
 
     this.obsluzRuch = function (mousePosX, mousePosY) {
+        console.log($(selectedPionek).attr('name'));
         if (selectedPionek != null) {
             $.ajax({
             type: 'GET',
@@ -164,11 +165,12 @@
                      yNowe: mousePosY,
                      kolorGracza: numerGraczaKtoryMaSieRuszyc,
                      xStare: $(selectedPionek).offset().left + wielkoscPionka/2,
-                     yStare: $(selectedPionek).offset().top + wielkoscPionka / 2
+                     yStare: $(selectedPionek).offset().top + wielkoscPionka / 2,
+                     nazwaPionka: $(selectedPionek).attr('name')                                //dodana nazwa pionka
                     },
                     success: function (msg) {
                         console.log(msg);         
-                        ruch(msg);
+                        ruch(msg, $(selectedPionek).attr('name'));          //wyslana  nazwa pionka
                     },
                     error: function (req, status, err) {
                         console.log('Something went wrong', status, err);
@@ -178,13 +180,17 @@
  }
     
 
-    function ruch(wynikRuchu) {
+    function ruch(wynikRuchu, nazwaPionka) {
         if(wynikRuchu.punkt.x != 0){
         var posPola = $('#plansza').offset();
         var posOdLewej = posPola.left;
         var posOdGory = posPola.top;
+        console.log(nazwaPionka);
+        $("[name='" + nazwaPionka + "']").remove();
+        selectedPionek = null;
+                ///////////////////////////////////////////
         if (numerGraczaKtoryMaSieRuszyc != 1) {
-            $('#plansza_div').prepend('<img id="cPionek" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (wynikRuchu.punkt.y - posOdGory - 12) + 'px; left:' + (wynikRuchu.punkt.x - posOdLewej - 12) + 'px"/>');
+            $('#plansza_div').prepend('<img id="cPionek" name="' + nazwaPionka + '" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (wynikRuchu.punkt.y - posOdGory - 12) + 'px; left:' + (wynikRuchu.punkt.x - posOdLewej - 12) + 'px"/>');
             if (wynikRuchu.czyJestMlynek) {
                 $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
@@ -193,7 +199,7 @@
                 $('#infoLabel').html("Biale");
             }
         } else {
-            $('#plansza_div').prepend('<img id="bPionek" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (wynikRuchu.punkt.y - posOdGory - 12) + 'px; left:' + (wynikRuchu.punkt.x - posOdLewej - 12) + 'px"/>');
+            $('#plansza_div').prepend('<img id="bPionek" name="' + nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (wynikRuchu.punkt.y - posOdGory - 12) + 'px; left:' + (wynikRuchu.punkt.x - posOdLewej - 12) + 'px"/>');
             if (wynikRuchu.czyJestMlynek) {
                 $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
@@ -202,12 +208,9 @@
                 $('#infoLabel').html("Czarne");
             }
         }
-        selectedPionek.remove();
-        selectedPionek = null;
+        //selectedPionek.remove();
+        //selectedPionek = null;
         }
-    }
-
-    function obsluzMlynek() {
     }
 }
 

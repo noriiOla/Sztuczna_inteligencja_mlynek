@@ -10,6 +10,7 @@ namespace MlynekV2.Models
         public bool zajete { get; set; }
         //public Pionek pionek { get; set; }
         public int kolorGracza {get;set;}
+        public string nazwaPionka { get; set; }
 
         public PoleNaPionek(bool dopuszczalne, double x, double y, bool zajete)
         {
@@ -17,6 +18,7 @@ namespace MlynekV2.Models
             this.x = x;
             this.y = y;
             this.zajete = zajete;
+            this.nazwaPionka = "";
         }
     }
 }
