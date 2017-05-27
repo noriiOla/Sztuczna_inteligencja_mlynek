@@ -2,6 +2,7 @@
     var url = localStorage.getItem("api-inicjuj-url");
     var urlObsluzRuch = localStorage.getItem("api-obsluzRuch-url");
     var urlUsunPionek = localStorage.getItem("api-usunPionek-url");
+    var znajdzRuchyUrl = localStorage.getItem("api-znajdzRuchy-url");
 
     var numerGraczaKtoryMaSieRuszyc = 1;
     var selectedPionek = null;
@@ -153,32 +154,49 @@
     }
 
     this.obsluzRuch = function (mousePosX, mousePosY) {
-        console.log($(selectedPionek).attr('name'));
+       
         if (selectedPionek != null) {
             $.ajax({
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                url: urlObsluzRuch,
+                dataType: 'json',
+                data: {
+                    xNowe: mousePosX,
+                    yNowe: mousePosY,
+                    kolorGracza: numerGraczaKtoryMaSieRuszyc,
+                    xStare: $(selectedPionek).offset().left + wielkoscPionka/2,
+                    yStare: $(selectedPionek).offset().top + wielkoscPionka / 2,
+                    nazwaPionka: $(selectedPionek).attr('name')                                //dodana nazwa pionka
+                },
+                success: function (msg) {
+                    console.log(msg);         
+                    ruch(msg, $(selectedPionek).attr('name'));          //wyslana  nazwa pionka
+                },
+                error: function (req, status, err) {
+                    console.log('Something went wrong', status, err);
+                }
+            })
+        }
+    }
+
+    this.znajdzRuchy = function (kolor) {
+        $.ajax({
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
-             url: urlObsluzRuch,
+            url: znajdzRuchyUrl,
             dataType: 'json',
-                 data: {
-                     xNowe: mousePosX,
-                     yNowe: mousePosY,
-                     kolorGracza: numerGraczaKtoryMaSieRuszyc,
-                     xStare: $(selectedPionek).offset().left + wielkoscPionka/2,
-                     yStare: $(selectedPionek).offset().top + wielkoscPionka / 2,
-                     nazwaPionka: $(selectedPionek).attr('name')                                //dodana nazwa pionka
-                    },
-                    success: function (msg) {
-                        console.log(msg);         
-                        ruch(msg, $(selectedPionek).attr('name'));          //wyslana  nazwa pionka
-                    },
-                    error: function (req, status, err) {
-                        console.log('Something went wrong', status, err);
-                    }
-             })
+            data: {
+                kolor: kolor
+            },
+            success: function (msg) {
+                console.log(msg);
+            },
+            error: function (req, status, err) {
+                console.log('Something went wrong', status, err);
+            }
+        })
     }
- }
-    
 
     function ruch(wynikRuchu, nazwaPionka) {
         if(wynikRuchu.punkt.x != 0){
@@ -217,7 +235,6 @@
 var game = new Gra();
 
 window.onload = function () {
-    console.log("DWA");
     $('#start_button').click(function () {
         game.rozdajPionki();
         $('#infoLabel').html("Biale");
@@ -228,7 +245,11 @@ window.onload = function () {
          game.obsluzRuch(event.pageX, event.pageY);
     })
 
-    $('#usun').click(function (event) {
-        $("[name='c1']").remove();
+    $('#znajdzRuchyB').click(function (event) {
+        game.znajdzRuchy("1");
+    })
+
+    $('#znajdzRuchyC').click(function (event) {
+        game.znajdzRuchy("2");
     })
 }

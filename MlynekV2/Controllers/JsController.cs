@@ -1,6 +1,7 @@
 ﻿
 using MlynekV2.Models;
 using MlynekV2.Services;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace MlynekV2.Controllers
@@ -32,6 +33,12 @@ namespace MlynekV2.Controllers
         {
             Gra.getInstance().usunZPlanszyInformacjeOStarymPunkcie(new Punkt(x, y));
             return  new JsonTransformService().SerializeToString(new Komunikat("c# usnuniete"));
+        }
+
+        public string znajdzRuchy(string kolor)
+        {
+            List<Ruch> listaRuchow=  Gra.getInstance().znajdzMiejscaDostepne(kolor);
+            return new JsonTransformService().SerializeToString(listaRuchow);
         }
     }
 }
