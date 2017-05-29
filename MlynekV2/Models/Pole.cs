@@ -39,5 +39,6 @@ namespace MlynekV2.Models
                 x = 244;
             }
         }
+
     }
 }

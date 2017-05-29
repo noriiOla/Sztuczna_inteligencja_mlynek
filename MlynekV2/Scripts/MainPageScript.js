@@ -3,6 +3,7 @@
     var urlObsluzRuch = localStorage.getItem("api-obsluzRuch-url");
     var urlUsunPionek = localStorage.getItem("api-usunPionek-url");
     var znajdzRuchyUrl = localStorage.getItem("api-znajdzRuchy-url");
+    var znajdzNajlepszyRuchUrl = localStorage.getItem("api-znajdzNajlRuch-url");
 
     var numerGraczaKtoryMaSieRuszyc = 1;
     var selectedPionek = null;
@@ -104,7 +105,7 @@
         var imgHeight = $('#lewePole').height();
         var bottomPos = imgHeight + posOdGory - wielkoscPionka;
         for (i = 0; i < 9; i++) {
-            $('#lewy_div').prepend('<img id="cPionek" class="cPionekClass" name="c' + i + ' height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
+            $('#lewy_div').prepend('<img id="cPionek" class="cPionekClass" name="c' + i + '" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + posOdGory + 'px; left:' + posOdLewej + 'px"/>')
             posOdGory = posOdGory + 35;
             if (posOdGory >= (bottomPos)) {
                 posOdGory = posPola.top + 10;
@@ -203,7 +204,6 @@
         var posPola = $('#plansza').offset();
         var posOdLewej = posPola.left;
         var posOdGory = posPola.top;
-        console.log(nazwaPionka);
         $("[name='" + nazwaPionka + "']").remove();
         selectedPionek = null;
                 ///////////////////////////////////////////
@@ -212,22 +212,100 @@
             if (wynikRuchu.czyJestMlynek) {
                 $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
+                //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("2", true);
+                }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
+                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("1", false);
+                }
             }
         } else {
             $('#plansza_div').prepend('<img id="bPionek" name="' + nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (wynikRuchu.punkt.y - posOdGory - 12) + 'px; left:' + (wynikRuchu.punkt.x - posOdLewej - 12) + 'px"/>');
             if (wynikRuchu.czyJestMlynek) {
                 $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
+                //if gracz == kom then znajdzPionekDoZabrania(ajax)
+                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("1", true);
+                }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");
+                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("2", false);
+                }
             }
         }
-        //selectedPionek.remove();
-        //selectedPionek = null;
+        }
+    }
+
+    this.kompZnajdzNajlepszyRucha = function (kolor, jestMlynek) {
+        $.ajax({
+            type: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            url: znajdzNajlepszyRuchUrl,
+            dataType: 'json',
+            data: {
+                kolor: kolor,
+                jestMlynek: jestMlynek
+            },
+            success: function (msg) {
+                console.log(msg);
+                obsluzRuchKomputera(msg);
+            },
+            error: function (req, status, err) {
+                console.log('Something went wrong', status, err);
+            }
+        })
+    }
+
+    function obsluzRuchKomputera(msg) {
+        var posPola = $('#plansza').offset();
+        var posOdLewej = posPola.left;
+        var posOdGory = posPola.top;
+        console.log(msg.nazwaPionka);
+        $("[name='" + msg.nazwaPionka + "']").remove();
+        if (numerGraczaKtoryMaSieRuszyc != 1) {
+// TU BEDZIE JESZCZEINFOR CZY POWSTAL MLYNEK
+            $('#plansza_div').prepend('<img id="cPionek" name="' + msg.nazwaPionka + '" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            if (msg.jestMlynek) {
+                $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
+                mlynek = true;
+                //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("2", true);
+                }
+            } else {
+                numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
+                $('#infoLabel').html("Biale");
+                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("1", false);
+                }
+            }
+        } else {
+            $('#plansza_div').prepend('<img id="bPionek" name="' + msg.nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            if (msg.jestMlynek) {
+                $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
+                mlynek = true;
+                //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("1", true);
+                }
+            } else {
+                numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
+                $('#infoLabel').html("Czarne");
+                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    game.kompZnajdzNajlepszyRucha("2", false);
+                }
+            }
         }
     }
 }
@@ -238,6 +316,9 @@ window.onload = function () {
     $('#start_button').click(function () {
         game.rozdajPionki();
         $('#infoLabel').html("Biale");
+        if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+            game.kompZnajdzNajlepszyRucha("1", false);
+        }
     })
 
     $('#plansza').click(function (event) {

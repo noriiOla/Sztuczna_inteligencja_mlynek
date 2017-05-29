@@ -13,6 +13,12 @@ namespace MlynekV2.Models
             this.punkt = punkt;
         }
 
+        public PionekDoZabrania(Punkt punkt)
+        {
+            this.nazwaPionka = nazwaPionka;
+            this.punkt = punkt;
+        }
+
         public string nazwaPionka { get; set; }
         public Punkt punkt { get; set; }
     }
