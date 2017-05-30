@@ -14,16 +14,16 @@ namespace MlynekV2.Services
 
         private Gra()
         {
-
-        }
-
-        public void init(int typGracza1, int typGracza2)
-        {
             this.pole = new Pole();
             //2 kolor Czarny; 1 kolor bialy
             //0 - czlowiek; 1- komputer
-            this.gracz1 = new Gracz(1, typGracza1, 0, 9);
-            this.gracz2 = new Gracz(2, typGracza2, 0, 9);  
+            this.gracz1 = new Gracz(1, 0, 0, 9);
+            this.gracz2 = new Gracz(2, 0, 0, 9);
+        }
+
+        public static void createNewInstance()
+        { 
+              gra = new Gra();
         }
 
         public static Gra getInstance()
@@ -174,7 +174,7 @@ namespace MlynekV2.Services
             
             int tempW = indexW+1;
             if(tempW < 7) { 
-                while ((pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
+                while ( tempW < 7 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
                 {
                     tempW++;
                 }
@@ -187,7 +187,7 @@ namespace MlynekV2.Services
 
             tempW = indexW - 1;
             if(tempW > -1) { 
-                while ((pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
+                while (tempW >-1 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
                 {
                     tempW--;
                 }
@@ -200,7 +200,7 @@ namespace MlynekV2.Services
 
             int tempK = indexKol- 1;
             if(tempK > -1) { 
-                while ((pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
+                while (tempK > -1  && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
                 {
                     tempK--;
                 }
@@ -214,7 +214,7 @@ namespace MlynekV2.Services
             tempK = indexKol + 1;
 
             if(tempK < 7) { 
-                while ((pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
+                while (tempK < 7 && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
                 {
                     tempK++;
                 }
@@ -229,12 +229,13 @@ namespace MlynekV2.Services
 
         public List<Punkt> znajdzPionkiDoZabrania(Pole pole, int kolor) //kolor pionka ktory chemy zabrac
         {
+            
             List<Punkt> pionkiDoZabrania = new List<Punkt>();
             for (int indexW = 0; indexW < 7; indexW++)
             {
                 for (int indexKol = 0; indexKol < 7; indexKol++)
                 {
-                    if (pole.plansza[indexW, indexKol].dopuszczalne && pole.plansza[indexW, indexKol].zajete && pole.plansza[indexW, indexKol].kolorGracza == kolor)
+                    if (pole.plansza[indexW, indexKol].dopuszczalne && pole.plansza[indexW, indexKol].zajete && (!(pole.plansza[indexW, indexKol].kolorGracza == kolor)))
                     {
                         pionkiDoZabrania.Add(new Punkt(indexW, indexKol));
                     }
@@ -260,50 +261,76 @@ namespace MlynekV2.Services
         }
 
         //////////////////metody komp//////////
+        //ObiektZwracanyPrzezAlfaBeta
         public ObiektZwracanyPrzezAlfaBeta kompZnajdzNajlepszeMiejsceIPionek(Gracz gracz, bool jestMlynek)
         {
-            string stanGry = jestMlynek ? "mlynek" : this.gracz2.iloscPionkowNieWylozonych != 0 ? "rozdawaniePionkow" : "ruch";
+            string stanGry = jestMlynek ? "mlynek" : gracz.nieUzytePionki.Count != 0 ? "rozdawaniePionkow" : "ruch";
             AlphaBeta algorytm = new AlphaBeta(this.pole);
-            ObiektZwracanyPrzezAlfaBeta ruch = algorytm.play(algorytm.pole, stanGry, gracz.kolor, this.gracz2.iloscPionkowNieWylozonych);
-            if(ruch.miejscePionkaDoPostawienia == null)
+            ObiektZwracanyPrzezAlfaBeta ruch = algorytm.play(algorytm.pole, stanGry, gracz.kolor, gracz.iloscPionkowNieWylozonych);
+
+            if (stanGry.Equals("mlynek"))
             {
                 ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
-                pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
+                this.pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
                 int x = (int)ruch.miejscePionkaDoUsuniecia.x;
                 int y = (int)ruch.miejscePionkaDoUsuniecia.y;
                 ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
                 ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
                 ruch.jestMlynek = false;
+                return ruch;
             }
-            if(ruch.miejscePionkaDoUsuniecia != null)
-            {       //trzeba dorobic (sprawdzic) ruch i dorobic mlynek gdzie miejscePionkaDOPostawianie == null
-                ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
-                pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
-                pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].zajete = true;
-                pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].nazwaPionka = ruch.nazwaPionka;
-                int x = (int) ruch.miejscePionkaDoUsuniecia.x;
-                int y = (int)ruch.miejscePionkaDoUsuniecia.y;
-                ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
-                ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
-                x = (int)ruch.miejscePionkaDoPostawienia.x;
-                y = (int)ruch.miejscePionkaDoPostawienia.y;
-                ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
-                ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
-                ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
+
+                if (stanGry.Equals("rozdawaniePionkow"))
+                {
+                    ruch.nazwaPionka = gracz.kolor == 1 ? "b" + gracz.nieUzytePionki[0].ToString() : "c" + gracz.nieUzytePionki[0].ToString();
+                    gracz.nieUzytePionki.Remove(Convert.ToInt32(gracz.nieUzytePionki[0]));
+                    if (this.pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].zajete) {
+                        bool s   = true;
+                    }
+                    this.pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].zajete = true;
+                    this.pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].kolorGracza = gracz.kolor;
+                    this.pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].nazwaPionka = ruch.nazwaPionka;
+                    int x = (int)ruch.miejscePionkaDoPostawienia.x;
+                    int y = (int)ruch.miejscePionkaDoPostawienia.y;
+                    ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
+                    ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
+                    ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
+                    return ruch;
+                    //if(ruch.miejscePionkaDoUsuniecia != null && ruch.jestMlynek)
+                    //{
+                    //    ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
+                    //    pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
+                    //    x = (int)ruch.miejscePionkaDoUsuniecia.x;
+                    //    y = (int)ruch.miejscePionkaDoUsuniecia.y;
+                    //    ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
+                    //    ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
+                    //    ruch.jestMlynek = false;
+                    //}
+                }
+
+                    if (stanGry.Equals("ruch"))
+                    {
+                        ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
+                        pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
+                        pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].zajete = true;
+                        pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].kolorGracza = gracz.kolor;
+                        pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].nazwaPionka = ruch.nazwaPionka;
+                        int x = (int)ruch.miejscePionkaDoUsuniecia.x;
+                        int y = (int)ruch.miejscePionkaDoUsuniecia.y;
+                        ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
+                        ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
+                        x = (int)ruch.miejscePionkaDoPostawienia.x;
+                        y = (int)ruch.miejscePionkaDoPostawienia.y;
+                        ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
+                        ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
+                        ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
+                        return ruch;
+                    }
+          else
+            {
+                return null;
             }
-            else
-            {       //  tylko postaw pionek  
-                ruch.nazwaPionka = gracz.kolor == 1 ? "b" + gracz.nieUzytePionki[0].ToString() : "c" + gracz.nieUzytePionki[0].ToString();
-                gracz.nieUzytePionki.Remove(Convert.ToInt32(gracz.nieUzytePionki[0]));
-                pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].zajete = true;
-                pole.plansza[(int)ruch.miejscePionkaDoPostawienia.x, (int)ruch.miejscePionkaDoPostawienia.y].nazwaPionka = ruch.nazwaPionka;
-                int x = (int)ruch.miejscePionkaDoPostawienia.x;
-                int y = (int)ruch.miejscePionkaDoPostawienia.y;
-                ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
-                ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
-                ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
-            }
-            return ruch;
+             
         }
     }
 }

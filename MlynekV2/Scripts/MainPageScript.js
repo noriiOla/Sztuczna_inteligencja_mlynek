@@ -246,6 +246,7 @@
     }
 
     this.kompZnajdzNajlepszyRucha = function (kolor, jestMlynek) {
+        console.log("znajdzNajlRuch");
         $.ajax({
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
@@ -257,7 +258,8 @@
             },
             success: function (msg) {
                 console.log(msg);
-                obsluzRuchKomputera(msg);
+                console.log("zwracam");
+                obsluzRuchKomputera(msg);               
             },
             error: function (req, status, err) {
                 console.log('Something went wrong', status, err);
@@ -279,14 +281,19 @@
                 mlynek = true;
                 //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
                 if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", true);
+                    
                 }
             } else {
+
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
                 // if gracz == kom then znajdzPionekDoPostawienia(ajax)
                 if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", false);
+                   
                 }
             }
         } else {
@@ -296,6 +303,7 @@
                 mlynek = true;
                 //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
                 if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", true);
                 }
             } else {
@@ -303,6 +311,7 @@
                 $('#infoLabel').html("Czarne");
                 // if gracz == kom then znajdzPionekDoPostawienia(ajax)
                 if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", false);
                 }
             }
@@ -314,11 +323,14 @@ var game = new Gra();
 
 window.onload = function () {
     $('#start_button').click(function () {
-        game.rozdajPionki();
-        $('#infoLabel').html("Biale");
-        if ($('#graczBialy').find(":selected").text() === 'Komputer') {
-            game.kompZnajdzNajlepszyRucha("1", false);
-        }
+        var promise = $.when(game.rozdajPionki());
+
+        promise.then(function () {
+            $('#infoLabel').html("Biale");
+            if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                game.kompZnajdzNajlepszyRucha("1", false);
+            }
+        });
     })
 
     $('#plansza').click(function (event) {

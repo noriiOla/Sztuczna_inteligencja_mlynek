@@ -15,9 +15,10 @@ namespace MlynekV2.Controllers
             return View();
         }
 
-        public void inicjuj(int gracz1, int gracz2)
+        public string inicjuj(int gracz1, int gracz2)
         {
-            Gra.getInstance().init(gracz1, gracz2);
+            Gra.createNewInstance();
+            return "true"; 
         }
 
         public Gracz getGracz(string kolor)
@@ -56,6 +57,7 @@ namespace MlynekV2.Controllers
         public string kompZnajdzRuch(string kolor, bool jestMlynek)
         {
             ObiektZwracanyPrzezAlfaBeta ruchKomp = Gra.getInstance().kompZnajdzNajlepszeMiejsceIPionek(getGracz(kolor), jestMlynek);
+           // Pole ruchKomp = Gra.getInstance().kompZnajdzNajlepszeMiejsceIPionek(getGracz(kolor), jestMlynek);
             return new JsonTransformService().SerializeToString(ruchKomp);
         }
     }
