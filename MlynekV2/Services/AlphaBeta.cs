@@ -12,7 +12,7 @@ namespace MlynekV2.Services
 
         public AlphaBeta(Pole pole)
         {
-            maxPoziom = 4;
+            maxPoziom = 8;
             this.pole = new Pole();
             for (int indexW = 0; indexW < 7; indexW++)
             {

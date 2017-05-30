@@ -12,6 +12,8 @@
     var gracz2 = 0;
     var iloscRozdanychPionkow = 0;
     var mlynek = false;
+    var iloscZabranychBialych = 0;
+    var iloscZabranychCzarnych = 0;
 
     this.rozdajPionki = function () {
         rozdajBiale();
@@ -272,18 +274,23 @@
         var posOdGory = posPola.top;
         console.log(msg.nazwaPionka);
         $("[name='" + msg.nazwaPionka + "']").remove();     // plus usuwam mlynek
-        if (numerGraczaKtoryMaSieRuszyc != 1) {
+        if (numerGraczaKtoryMaSieRuszyc != 1) {         //tu sa czarne
             // TU BEDZIE JESZCZEINFOR CZY POWSTAL MLYNEK
             if (msg.stanGry !== "oblugujeMlynek") {
                 $('#plansza_div').prepend('<img id="cPionek" name="' + msg.nazwaPionka + '" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
             }
             if (msg.jestMlynek) {
-                $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
-                mlynek = true;
-                //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
-                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
-                    console.log("wywoluje");
-                    game.kompZnajdzNajlepszyRucha("2", true);
+                iloscZabranychCzarnych = iloscZabranychCzarnych + 1;
+                if (iloscZabranychCzarnych < 7) {
+                    $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
+                    mlynek = true;
+                    //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+                    if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                        console.log("wywoluje");
+                        game.kompZnajdzNajlepszyRucha("2", true);
+                    }
+                } else {
+                    $('#infoLabel').html("Wygraly biale! BRAWO!");
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
@@ -294,18 +301,23 @@
                     game.kompZnajdzNajlepszyRucha("1", false);
                 }
             }
-        } else {
+        } else {        // tu sa biale
             if (msg.stanGry !== "oblugujeMlynek") {
                 $('#plansza_div').prepend('<img id="bPionek" name="' + msg.nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
             }
             
             if (msg.jestMlynek) {
-                $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
-                mlynek = true;
-                //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
-                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
-                    console.log("wywoluje");
-                    game.kompZnajdzNajlepszyRucha("1", true);
+                iloscZabranychBialych = iloscZabranychBialych + 1;
+                if (iloscZabranychBialych < 7) {
+                    $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
+                    mlynek = true;
+                    //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+                    if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                        console.log("wywoluje");
+                        game.kompZnajdzNajlepszyRucha("1", true);
+                    }
+                } else {
+                    $('#infoLabel').html("Wygraly czarne! BRAWO!");
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
