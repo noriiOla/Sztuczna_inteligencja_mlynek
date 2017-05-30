@@ -16,5 +16,6 @@ namespace MlynekV2.Models
         public Punkt miejscePionkaDoPostawienia { get; set; }
         public string nazwaPionka { get; set; }
         public bool jestMlynek { get; set; }
+        public string stanGry { get; set; }
     }
 }

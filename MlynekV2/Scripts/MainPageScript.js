@@ -16,10 +16,9 @@
     this.rozdajPionki = function () {
         rozdajBiale();
         rozdajCzarne();
-        send();
     }
 
-    function send() {
+    this.send = function () {
         return $.ajax({
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
@@ -30,7 +29,7 @@
                 gracz2: gracz2
             },
             success: function (msg) {
-                console.log(msg.komunikat);
+                console.log(msg); console.log("koneic inincjacji");
             }
         })
     }
@@ -272,10 +271,12 @@
         var posOdLewej = posPola.left;
         var posOdGory = posPola.top;
         console.log(msg.nazwaPionka);
-        $("[name='" + msg.nazwaPionka + "']").remove();
+        $("[name='" + msg.nazwaPionka + "']").remove();     // plus usuwam mlynek
         if (numerGraczaKtoryMaSieRuszyc != 1) {
-// TU BEDZIE JESZCZEINFOR CZY POWSTAL MLYNEK
-            $('#plansza_div').prepend('<img id="cPionek" name="' + msg.nazwaPionka + '" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            // TU BEDZIE JESZCZEINFOR CZY POWSTAL MLYNEK
+            if (msg.stanGry !== "oblugujeMlynek") {
+                $('#plansza_div').prepend('<img id="cPionek" name="' + msg.nazwaPionka + '" class="cPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="c_pionek" src="/Resources/Images/cPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            }
             if (msg.jestMlynek) {
                 $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
@@ -283,21 +284,21 @@
                 if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", true);
-                    
                 }
             } else {
-
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
                 // if gracz == kom then znajdzPionekDoPostawienia(ajax)
                 if ($('#graczBialy').find(":selected").text() === 'Komputer') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", false);
-                   
                 }
             }
         } else {
-            $('#plansza_div').prepend('<img id="bPionek" name="' + msg.nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            if (msg.stanGry !== "oblugujeMlynek") {
+                $('#plansza_div').prepend('<img id="bPionek" name="' + msg.nazwaPionka + '" class="bPionekClass" height="' + wielkoscPionka + '" width="' + wielkoscPionka + '" class="b_pionek" src="/Resources/Images/bPionek.png" style="z-index:1; position:absolute; top:' + (msg.miejscePionkaDoPostawienia.y - posOdGory - 12) + 'px; left:' + (msg.miejscePionkaDoPostawienia.x - posOdLewej - 12) + 'px"/>');
+            }
+            
             if (msg.jestMlynek) {
                 $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
@@ -323,9 +324,11 @@ var game = new Gra();
 
 window.onload = function () {
     $('#start_button').click(function () {
-        var promise = $.when(game.rozdajPionki());
+        game.rozdajPionki()
+        var promise = $.when(game.send());
 
         promise.then(function () {
+            console.log("wywoluje pierwszy ruch");
             $('#infoLabel').html("Biale");
             if ($('#graczBialy').find(":selected").text() === 'Komputer') {
                 game.kompZnajdzNajlepszyRucha("1", false);

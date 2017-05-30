@@ -174,7 +174,7 @@ namespace MlynekV2.Services
             
             int tempW = indexW+1;
             if(tempW < 7) { 
-                while ( tempW < 7 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
+                while ( tempW < 6 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
                 {
                     tempW++;
                 }
@@ -187,7 +187,7 @@ namespace MlynekV2.Services
 
             tempW = indexW - 1;
             if(tempW > -1) { 
-                while (tempW >-1 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
+                while (tempW > 0 && (pole.plansza[tempW, indexKol] != null) && (!pole.plansza[tempW, indexKol].dopuszczalne) && (!(tempW == 3 && indexKol == 3)))
                 {
                     tempW--;
                 }
@@ -200,7 +200,7 @@ namespace MlynekV2.Services
 
             int tempK = indexKol- 1;
             if(tempK > -1) { 
-                while (tempK > -1  && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
+                while (tempK > 0  && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
                 {
                     tempK--;
                 }
@@ -214,7 +214,7 @@ namespace MlynekV2.Services
             tempK = indexKol + 1;
 
             if(tempK < 7) { 
-                while (tempK < 7 && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
+                while (tempK < 6 && (pole.plansza[indexW, tempK] != null) && (!pole.plansza[indexW, tempK].dopuszczalne) && (!(indexW == 3 && tempK == 3)))
                 {
                     tempK++;
                 }
@@ -277,6 +277,7 @@ namespace MlynekV2.Services
                 ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
                 ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
                 ruch.jestMlynek = false;
+                ruch.stanGry = "oblugujeMlynek";
                 return ruch;
             }
 
@@ -295,17 +296,8 @@ namespace MlynekV2.Services
                     ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
                     ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
                     ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
+                    ruch.stanGry = "rozdawaniePionkow";
                     return ruch;
-                    //if(ruch.miejscePionkaDoUsuniecia != null && ruch.jestMlynek)
-                    //{
-                    //    ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
-                    //    pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
-                    //    x = (int)ruch.miejscePionkaDoUsuniecia.x;
-                    //    y = (int)ruch.miejscePionkaDoUsuniecia.y;
-                    //    ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
-                    //    ruch.miejscePionkaDoUsuniecia.y = pole.plansza[x, y].y;
-                    //    ruch.jestMlynek = false;
-                    //}
                 }
 
                     if (stanGry.Equals("ruch"))
@@ -324,9 +316,10 @@ namespace MlynekV2.Services
                         ruch.miejscePionkaDoPostawienia.x = pole.plansza[x, y].x;
                         ruch.miejscePionkaDoPostawienia.y = pole.plansza[x, y].y;
                         ruch.jestMlynek = powstalMlynek(x, y, gracz.kolor, this.pole);
+                        ruch.stanGry = "ruch";
                         return ruch;
                     }
-          else
+          
             {
                 return null;
             }

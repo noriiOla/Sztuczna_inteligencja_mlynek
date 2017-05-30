@@ -172,7 +172,7 @@ namespace MlynekV2.Services
 
                                 if (iloscPionkowNieRozdanychCzarnych - 1 == 0)
                                 {                                                                                                                                                                                                                       //zmienam to ponizej
-                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                     if (value.maxValue < wynikMax.maxValue)
                                     {
                                         value = wynikMax;
@@ -180,7 +180,7 @@ namespace MlynekV2.Services
                                 }
                                 else
                                 {
-                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                     if (value.maxValue < wynikMax.maxValue)
                                     {
                                         value = wynikMax;
@@ -319,7 +319,7 @@ namespace MlynekV2.Services
                                 {
                                     if (iloscPionkowNieRozdanychCzarnych - 1 == 0)
                                     {
-                                        ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, (wczesniejszyRuch != null && wczesniejszyRuch.miejscePionkaDoUsuniecia != null) ? wczesniejszyRuch.miejscePionkaDoUsuniecia : ruch.miejscePionkaDoUsniecia, wczesniejszyRuch == null ? punkt : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                        ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, (wczesniejszyRuch != null) ? wczesniejszyRuch.miejscePionkaDoUsuniecia : ruch.miejscePionkaDoUsniecia, wczesniejszyRuch == null ? punkt : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                         if (value.maxValue > wynikMax.maxValue)
                                         {
                                             value = wynikMax;
@@ -327,7 +327,7 @@ namespace MlynekV2.Services
                                     }
                                     else
                                     {
-                                        ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, (wczesniejszyRuch != null && wczesniejszyRuch.miejscePionkaDoUsuniecia != null) ? wczesniejszyRuch.miejscePionkaDoUsuniecia : ruch.miejscePionkaDoUsniecia, wczesniejszyRuch == null ? punkt : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                        ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, (wczesniejszyRuch != null) ? wczesniejszyRuch.miejscePionkaDoUsuniecia : ruch.miejscePionkaDoUsniecia, wczesniejszyRuch == null ? punkt : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                         if (value.maxValue > wynikMax.maxValue)
                                         {
                                             value = wynikMax;
@@ -369,7 +369,7 @@ namespace MlynekV2.Services
 
                                 if (iloscPionkowNieRozdanychCzarnych - 1 == 0)
                                 {
-                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, "ruch", poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                     if (value.maxValue > wynikMax.maxValue)
                                     {
                                         value = wynikMax;
@@ -377,7 +377,7 @@ namespace MlynekV2.Services
                                 }
                                 else
                                 {
-                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                                    ObiektZwracanyPrzezAlfaBeta wynikMax = playMin(alpha, beta, pole, etapGry, poziom, kolor == 1 ? 2 : 1, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoPostawienia));
                                     if (value.maxValue > wynikMax.maxValue)
                                     {
                                         value = wynikMax;
