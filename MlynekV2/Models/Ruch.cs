@@ -10,6 +10,7 @@ namespace MlynekV2.Models
         public Ruch(string idPionka, Punkt miejscePionkaDoUsniecia, List<Punkt> miejscaNaKtoreMozeSieRuszyc)
         {
             this.idPionka = idPionka;
+            this.miejscePionkaDoUsniecia = miejscePionkaDoUsniecia;
             this.miejscaNaKtoreMozeSieRuszyc = miejscaNaKtoreMozeSieRuszyc;
         }
 

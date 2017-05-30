@@ -100,7 +100,7 @@ namespace MlynekV2.Services
             {
                 if (etapGry.Equals("ruch"))
                 {
-                    List<Ruch> listaRuchow = gra.znajdzMiejscaDostepne(kolor, pole);
+                    List<Ruch> listaRuchow = gra.znajdzMozliwePrzesuniecia(kolor, pole);
                     if (poziom < this.maxPoziom)
                     {
                         foreach (Ruch ruch in listaRuchow)
@@ -295,7 +295,7 @@ namespace MlynekV2.Services
             {
                 if (etapGry.Equals("ruch"))
                 {
-                    List<Ruch> listaRuchow = gra.znajdzMiejscaDostepne(kolor, pole);
+                    List<Ruch> listaRuchow = gra.znajdzMozliwePrzesuniecia(kolor, pole);
                     if (poziom < this.maxPoziom)
                     {
                         foreach (Ruch ruch in listaRuchow)

@@ -152,7 +152,7 @@ namespace MlynekV2.Services
         /// </summary>
         /// <param name="gracz"></param>
         /// <returns></returns>
-        public List<Ruch> znajdzMiejscaDostepne(int graczKolor, Pole pole)
+        public List<Ruch> znajdzMozliwePrzesuniecia(int graczKolor, Pole pole)
         {
             List<Ruch> wolneMiejsca = new List<Ruch>();
             for(int indexW = 0; indexW < 7; indexW++)

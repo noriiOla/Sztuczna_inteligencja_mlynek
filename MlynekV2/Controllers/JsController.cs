@@ -50,7 +50,7 @@ namespace MlynekV2.Controllers
 
         public string znajdzRuchy(string kolor)
         {
-            List<Ruch> listaRuchow=  Gra.getInstance().znajdzMiejscaDostepne(Convert.ToInt32(kolor), Gra.getInstance().pole);
+            List<Ruch> listaRuchow=  Gra.getInstance().znajdzMozliwePrzesuniecia(Convert.ToInt32(kolor), Gra.getInstance().pole);
             return new JsonTransformService().SerializeToString(listaRuchow);
         }
 
