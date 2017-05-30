@@ -1,7 +1,6 @@
 ﻿using MlynekV2.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace MlynekV2.Services
 {
@@ -52,8 +51,7 @@ namespace MlynekV2.Services
                         pole.plansza[(int)ruch.x, (int)ruch.y].kolorGracza = kolor;
                         if (Gra.getInstance().powstalMlynek((int)ruch.x, (int)ruch.y, kolor, pole))
                         {
-                            // ObiektZwracanyPrzezAlfaBeta wynikMax = playMax(alpha, beta, pole, "mlynek", poziom, kolor, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch== null ? null: wczesniejszyRuch.miejscePionkaDoUsuniecia, ruch));
-                            ObiektZwracanyPrzezAlfaBeta wynikMax = playMax(alpha, beta, pole, "mlynek", poziom, kolor, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia));
+                             ObiektZwracanyPrzezAlfaBeta wynikMax = playMax(alpha, beta, pole, "mlynek", poziom, kolor, iloscPionkowNieRozdanychCzarnych - 1, new ObiektZwracanyPrzezAlfaBeta(value.maxValue, wczesniejszyRuch == null ? null : wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch == null ? ruch : wczesniejszyRuch.miejscePionkaDoPostawienia));
 
                             if (value.maxValue < wynikMax.maxValue)
                             {
@@ -93,7 +91,7 @@ namespace MlynekV2.Services
                 }
                 else
                 {
-                    return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                    return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                 }
             }
             else
@@ -151,12 +149,11 @@ namespace MlynekV2.Services
                                 pole.plansza[(int)punkt.x, (int)punkt.y].zajete = false;
                             }
                             pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = true;
-                            // w js potem nadaj temu nazwe pionka i wyslij info do c#
                         }
                     }
                     else
                     {
-                        return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                        return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                     }
                 }
                 else
@@ -168,7 +165,7 @@ namespace MlynekV2.Services
                         {
                             foreach (Punkt ruch in listaRuchow)
                             {
-                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;          
 
                                 if (iloscPionkowNieRozdanychCzarnych - 1 == 0)
                                 {                                                                                                                                                                                                                       //zmienam to ponizej
@@ -195,12 +192,12 @@ namespace MlynekV2.Services
                                 {
                                     alpha = value.maxValue;
                                 }
-                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;         
                             }
                         }
                         else
                         {
-                            return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                            return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                         }
                     }
                     else
@@ -213,22 +210,13 @@ namespace MlynekV2.Services
             {
                 return wczesniejszyRuch;
             }else { 
-                 return value;               //// usun potem
+                 return value;              
             }
         }
 
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////
         /// </summary>
-        /// <param name="alpha"></param>
-        /// <param name="beta"></param>
-        /// <param name="pole"></param>
-        /// <param name="etapGry"></param>
-        /// <param name="poziom"></param>
-        /// <param name="kolor"></param>
-        /// <param name="iloscPionkowNieRozdanychCzarnych"></param>
-        /// <param name="wczesniejszyRuch"></param>
-        /// <returns></returns>
       //  https://github.com/ForbesLindesay/alpha-beta-pruning/blob/master/index.js
         public ObiektZwracanyPrzezAlfaBeta playMin(int alpha, int beta, Pole pole, string etapGry, int poziom, int kolor, int iloscPionkowNieRozdanychCzarnych, ObiektZwracanyPrzezAlfaBeta wczesniejszyRuch)
         {
@@ -243,7 +231,7 @@ namespace MlynekV2.Services
                 {
                     foreach (Punkt ruch in listaRuchow)
                     {
-                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;         
                         pole.plansza[(int)ruch.x, (int)ruch.y].kolorGracza = kolor;
                         if (Gra.getInstance().powstalMlynek((int)ruch.x, (int)ruch.y, kolor, pole))
                         {
@@ -283,12 +271,12 @@ namespace MlynekV2.Services
                             beta = value.maxValue;
                         }
 
-                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;         
                     }
                 }
                 else
                 {
-                    return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                    return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                 }
             }
             else
@@ -300,11 +288,11 @@ namespace MlynekV2.Services
                     {
                         foreach (Ruch ruch in listaRuchow)
                         {
-                            pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = false;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                            pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = false;          
 
                             foreach (Punkt punkt in ruch.miejscaNaKtoreMozeSieRuszyc)
                             {
-                                pole.plansza[(int)punkt.x, (int)punkt.y].zajete = true;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                                pole.plansza[(int)punkt.x, (int)punkt.y].zajete = true;          
                                 pole.plansza[(int)punkt.x, (int)punkt.y].kolorGracza = kolor;
 
                                 if (Gra.getInstance().powstalMlynek((int)punkt.x, (int)punkt.y, kolor, pole))
@@ -348,12 +336,11 @@ namespace MlynekV2.Services
                                 pole.plansza[(int)punkt.x, (int)punkt.y].zajete = false;
                             }
                             pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = true;
-                            // w js potem nadaj temu nazwe pionka i wyslij info do c#
                         }
                     }
                     else
                     {
-                        return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                        return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                     }
                 }
                 else
@@ -365,7 +352,7 @@ namespace MlynekV2.Services
                         {
                             foreach (Punkt ruch in listaRuchow)
                             {
-                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;       
 
                                 if (iloscPionkowNieRozdanychCzarnych - 1 == 0)
                                 {
@@ -393,12 +380,12 @@ namespace MlynekV2.Services
                                 {
                                     beta = value.maxValue;
                                 }
-                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;          // w js potem nadaj temu nazwe pionka i wyslij info do c#
+                                pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;        
                             }
                         }
                         else
                         {
-                            return new ObiektZwracanyPrzezAlfaBeta(funckjaH1(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                            return new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                         }
                     }
                     else
@@ -414,7 +401,7 @@ namespace MlynekV2.Services
             }
             else
             {
-                return value;               //// usun potem
+                return value;  
             }
         }
 
@@ -430,7 +417,7 @@ namespace MlynekV2.Services
             }
         }
 
-        public int funckjaH1(Pole pole, int kolorGracza)
+        public int funckjaPrzydzielaniaPunktow(Pole pole, int kolorGracza)
         {
             return przeszukajPole(pole, kolorGracza);
         }
@@ -467,14 +454,14 @@ namespace MlynekV2.Services
                         ilosc++;
                         if (indexW == 3 && indexW == 3)
                         {
-                            punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                            punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
                             ilosc = 0;
                             iloscBialychWLini = 0;
                             iloscCzarnychWLini = 0;
                         }
                     }
                 }
-                punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
             }
 
             for (int indexW = 0; indexW < 7; indexW++)
@@ -497,14 +484,14 @@ namespace MlynekV2.Services
                         ilosc++;
                         if (indexW == 3 && indexW == 3)
                         {
-                            punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                            punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
                             ilosc = 0;
                             iloscBialychWLini = 0;
                             iloscCzarnychWLini = 0;
                         }
                     }
                 }
-                punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
             }
 
             if (kolorGracza == 1)
@@ -515,15 +502,11 @@ namespace MlynekV2.Services
             {
                 punkty += iloscPionkowC;
             }
-            if (punkty != 1)
-            {
-                int i = 2;
-            }
 
             return punkty;
         }
 
-        public int dodajPunktyH1(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
+        public int dodajPunkty(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
         {
             int mode = 0;
             if (iloscBialychWLini == 3)
@@ -563,20 +546,20 @@ namespace MlynekV2.Services
                     }
                 }     
             }
-            return ustalPunktyWZaleznosciOdGracza(mode, kolorGracza);
+            return H1(mode, kolorGracza);
         }
 
-        public int ustalPunktyWZaleznosciOdGracza(int mode, int kolorGracza)
+        public int H1(int mode, int kolorGracza)
         {
             switch (mode)
             {
                 case 1:
                     if(kolorGracza == 1)
                     {
-                        return 4;
+                        return 6;
                     }else
                     {
-                        return -3;
+                        return -5;
                     }
                 case 2:
                     if (kolorGracza == 1)
@@ -587,27 +570,24 @@ namespace MlynekV2.Services
                     {
                         return 10;
                     }
-                    break;
                 case 3:
                     if (kolorGracza == 1)
                     {
-                        return 3;
+                        return 10;
                     }
                     else
                     {
                         return -1;
                     }
-                    break;
                 case 4:
                     if (kolorGracza == 1)
                     {
-                        return -3;
+                        return -5;
                     }
                     else
                     {
-                        return 4;
+                        return 6;
                     }
-                    break;
                 case 5:
                     if (kolorGracza == 1)
                     {
@@ -617,7 +597,6 @@ namespace MlynekV2.Services
                     {
                         return -3;
                     }
-                    break;
                 case 6:
                     if (kolorGracza == 1)
                     {
@@ -627,7 +606,6 @@ namespace MlynekV2.Services
                     {
                         return 3;
                     }
-                    break;
                 default:
                     return 0;
 
