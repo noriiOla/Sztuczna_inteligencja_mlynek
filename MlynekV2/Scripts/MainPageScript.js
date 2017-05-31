@@ -295,7 +295,7 @@
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
-                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+
                 if ($('#graczBialy').find(":selected").text() === 'Komputer') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", false);
@@ -311,7 +311,7 @@
                 if (iloscZabranychBialych < 7) {
                     $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                     mlynek = true;
-                    //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
+
                     if ($('#graczBialy').find(":selected").text() === 'Komputer') {
                         console.log("wywoluje");
                         game.kompZnajdzNajlepszyRucha("1", true);
@@ -322,7 +322,7 @@
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");
-                // if gracz == kom then znajdzPionekDoPostawienia(ajax)
+
                 if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", false);
