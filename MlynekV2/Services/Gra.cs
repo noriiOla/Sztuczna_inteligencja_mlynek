@@ -195,10 +195,18 @@ namespace MlynekV2.Services
                         List<Punkt> listaPunktow = szukajWolnychMiejc(indexW, indexKol, graczKolor, pole);
                         if(listaPunktow.Count != 0)
                         {
+                            if (this.kolejnoscWezlow.Equals("Od tylu"))
+                            {
+                                listaPunktow.Reverse();
+                            }
                             wolneMiejsca.Add(new Ruch(pole.plansza[indexW, indexKol].nazwaPionka, new Punkt(indexW, indexKol), listaPunktow));
                         }
                     }
                 }
+            }
+            if (this.kolejnoscWezlow.Equals("Od tylu"))
+            {
+                wolneMiejsca.Reverse();
             }
             return wolneMiejsca; 
         }
@@ -259,6 +267,10 @@ namespace MlynekV2.Services
                     listaPunktow.Add(new Punkt(indexW, tempK));
                 }
             }
+            if (this.kolejnoscWezlow.Equals("Od tylu"))
+            {
+                listaPunktow.Reverse();
+            }
             return listaPunktow;
         }
 
@@ -276,6 +288,10 @@ namespace MlynekV2.Services
                     }
                 }
             }
+            if (this.kolejnoscWezlow.Equals("Od tylu"))
+            {
+                pionkiDoZabrania.Reverse();
+            }
             return pionkiDoZabrania;
         }
 
@@ -291,6 +307,10 @@ namespace MlynekV2.Services
                         wolneMiejsca.Add(new Punkt(indexW, indexKol));
                     }
                 }
+            }
+            if (this.kolejnoscWezlow.Equals("Od tylu"))
+            {
+                wolneMiejsca.Reverse();
             }
             return wolneMiejsca;
         }
@@ -346,7 +366,7 @@ namespace MlynekV2.Services
                     string noweIdPionka = ruch.nazwaPionka;
                     Punkt nowyPunktDoPostawienia = ruch.miejscePionkaDoPostawienia;
 
-                    if (listaMozliwychRuchow.Count == 0 || (listaMozliwychRuchow.Count == 1 && listaMozliwychRuchow[0].miejscaNaKtoreMozeSieRuszyc.Count < 2))
+                    if (listaMozliwychRuchow.Count == 0)
                     {
                         ruch.miejscePionkaDoPostawienia = null;
                         ruch.miejscePionkaDoUsuniecia = null;
