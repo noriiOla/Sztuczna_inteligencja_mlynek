@@ -14,6 +14,7 @@
     var mlynek = false;
     var iloscZabranychBialych = 0;
     var iloscZabranychCzarnych = 0;
+    var poczatekGry = 0;
 
     this.rozdajPionki = function () {
         rozdajBiale();
@@ -35,7 +36,7 @@
                 kolejnoscWezlow: $('#kolejnoscW').find(":selected").text()
             },
             success: function (msg) {
-                console.log(msg); console.log("koneic inincjacji");
+                console.log("koneic inincjacji");
             }
         })
     }
@@ -51,13 +52,11 @@
                 y: y
             },
             success: function (msg) {
-                console.log(msg);
             }
         })
     }
 
     function rozdajBiale() {
-        console.log("dodaje biale");
         var posPola = $('#prawePole').position();
         var posOdLewej = posPola.left + 35;
         var posOdGory = posPola.top + 10;
@@ -81,14 +80,11 @@
                 var yPionkaDoUsuniecia = $(this).offset().top + wielkoscPionka / 2;
                 usunPionek(xPionkaDoUsuniecia, yPionkaDoUsuniecia);
                 $(this).remove();
-                //wyslij info o pionku usunietym
-                console.log("usunieto bialy pionek")
                 $("#infoLabel").html("Biale");
             } else {
                 if (numerGraczaKtoryMaSieRuszyc == 1) {
                     var posPola = $('#plansza').offset();
                     var posPionka = $(this).offset();
-                    console.log(posPionka.left);
                     if (iloscRozdanychPionkow < 18 && posPionka.left < (posPola.left + $('#plansza').height())) {
                         $("#infoLabel").html("First drop to panel");
                     } else {
@@ -103,7 +99,6 @@
     }
 
     function rozdajCzarne() {
-        console.log("dodaje czarne");
         var posPola = $('#lewePole').position();
         var posOdLewej = posPola.left + 20;
         var posOdGory = posPola.top + 10;
@@ -127,9 +122,6 @@
                 usunPionek(xPionkaDoUsuniecia, yPionkaDoUsuniecia);
                 $(this).remove();
                 $("#infoLabel").html("Biale");
-
-                //wyslij info o pionku usunietym
-                console.log("usunieto czarny pionek")
             } else {
                 if (numerGraczaKtoryMaSieRuszyc == 2) {
                     var posPola = $('#plansza').offset();
@@ -175,8 +167,7 @@
                     yStare: $(selectedPionek).offset().top + wielkoscPionka / 2,
                     nazwaPionka: $(selectedPionek).attr('name')                                //dodana nazwa pionka
                 },
-                success: function (msg) {
-                    console.log(msg);         
+                success: function (msg) {       
                     ruch(msg, $(selectedPionek).attr('name'));          //wyslana  nazwa pionka
                 },
                 error: function (req, status, err) {
@@ -196,7 +187,6 @@
                 kolor: kolor
             },
             success: function (msg) {
-                console.log(msg);
             },
             error: function (req, status, err) {
                 console.log('Something went wrong', status, err);
@@ -251,7 +241,6 @@
     }
 
     this.kompZnajdzNajlepszyRucha = function (kolor, jestMlynek) {
-        console.log("znajdzNajlRuch");
         $.ajax({
             type: 'GET',
             contentType: 'application/json; charset=utf-8',
@@ -262,8 +251,6 @@
                 jestMlynek: jestMlynek
             },
             success: function (msg) {
-                console.log(msg);
-                console.log("zwracam");
                 obsluzRuchKomputera(msg);               
             },
             error: function (req, status, err) {
@@ -276,13 +263,16 @@
         var posPola = $('#plansza').offset();
         var posOdLewej = posPola.left;
         var posOdGory = posPola.top;
-        console.log(msg.nazwaPionka);
         $("[name='" + msg.nazwaPionka + "']").remove();
         if (msg.miejscePionkaDoPostawienia == null && msg.miejscePionkaDoUsuniecia == null) {
             if (numerGraczaKtoryMaSieRuszyc != 1) {
                 $('#infoLabel').html("Czarne nie maja sie gdzie ruszyc, wygraly biale! BRAWO!");
+                console.log("Czas gry:");
+                console.log(new Date().getTime() - poczatekGry);
             } else {
                 $('#infoLabel').html("Biale nie maja sie gdzie ruszyc, wygraly czarne! BRAWO!");
+                console.log("Czas gry:");
+                console.log(new Date().getTime() - poczatekGry);
             }
         }
         if (numerGraczaKtoryMaSieRuszyc != 1) {        
@@ -297,18 +287,18 @@
                     mlynek = true;
 
                     if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
-                        console.log("wywoluje");
                         game.kompZnajdzNajlepszyRucha("2", true);
                     }
                 } else {
                     $('#infoLabel').html("Wygraly czarne! BRAWO!");
+                    console.log("Czas gry:");
+                    console.log(new Date().getTime() - poczatekGry);
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
 
                 if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
-                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", false);
                 }
             }
@@ -324,18 +314,18 @@
                     mlynek = true;
 
                     if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
-                        console.log("wywoluje");
                         game.kompZnajdzNajlepszyRucha("1", true);
                     }
                 } else {
                     $('#infoLabel').html("Wygraly biale! BRAWO!");
+                    console.log("Czas gry:");
+                    console.log(new Date().getTime() - poczatekGry);
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");
 
                 if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
-                    console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", false);
                 }
             }
@@ -351,16 +341,15 @@ window.onload = function () {
         var promise = $.when(game.send());
 
         promise.then(function () {
-            console.log("wywoluje pierwszy ruch");
             $('#infoLabel').html("Biale");
             if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
+                game.poczatekGry = new Date().getTime();
                 game.kompZnajdzNajlepszyRucha("1", false);
             }
         });
     })
 
     $('#plansza').click(function (event) {
-         console.log(event.pageX + " " + event.pageY);
          game.obsluzRuch(event.pageX, event.pageY);
     })
 

@@ -371,10 +371,8 @@ namespace MlynekV2.Services
                         ruch.miejscePionkaDoPostawienia = null;
                         ruch.miejscePionkaDoUsuniecia = null;
                         ruch.nazwaPionka = "";
-                        return ruch;            //w js sprawdz czy ruch juz byl
-                        //przegrales //zwroc null(wtedybedzie info jednoczesnie)
+                        return ruch;
                     }
-
 
                     Random rand = new Random();
                     rand.Next(0, listaMozliwychRuchow.Count);
