@@ -90,7 +90,7 @@ namespace MlynekV2.Services
                 }
                 else
                 {
-                    ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                    ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                     obiektDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                     return obiektDoZwrocenia;
                 }
@@ -143,7 +143,7 @@ namespace MlynekV2.Services
                     }
                     else
                     {
-                        ObiektZwracanyPrzezAlfaBeta obiekDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                        ObiektZwracanyPrzezAlfaBeta obiekDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                         obiekDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                         return obiekDoZwrocenia;
                     }
@@ -188,7 +188,7 @@ namespace MlynekV2.Services
                         }
                         else
                         {
-                            ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                            ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                             obiektDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                             return obiektDoZwrocenia;
                        }
@@ -269,7 +269,7 @@ namespace MlynekV2.Services
                 }
                 else
                 {
-                    ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                    ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                     obiektDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                     return obiektDoZwrocenia;
                 }
@@ -326,7 +326,7 @@ namespace MlynekV2.Services
                     }
                     else
                     {
-                        ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia =  new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                        ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia =  new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                         obiektDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                         return obiektDoZwrocenia;
                     }
@@ -373,7 +373,7 @@ namespace MlynekV2.Services
                         }
                         else
                         {
-                            ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
+                            ObiektZwracanyPrzezAlfaBeta obiektDoZwrocenia = new ObiektZwracanyPrzezAlfaBeta(funckjaPrzydzielaniaPunktow(pole, kolor, listaRuchow.Count), wczesniejszyRuch.miejscePionkaDoUsuniecia, wczesniejszyRuch.miejscePionkaDoPostawienia);
                             obiektDoZwrocenia.iloscPowtorzenRuchu = iloscPowtorzenRuchu;
                             return obiektDoZwrocenia;
                         }
@@ -407,13 +407,23 @@ namespace MlynekV2.Services
             }
         }
 
-        public int funckjaPrzydzielaniaPunktow(Pole pole, int kolorGracza)
+        public int funckjaPrzydzielaniaPunktow(Pole pole, int kolorGracza, int iloscMozliwychRuchow)
         {
-            return przeszukajPole(pole, kolorGracza);
+            return przeszukajPole(pole, kolorGracza, iloscMozliwychRuchow);
         }
 
-        public int przeszukajPole(Pole poleDoSprawdzenia, int kolorGracza)
+        public int przeszukajPole(Pole poleDoSprawdzenia, int kolorGracza, int iloscMozliwychRuchow)
         {
+            string typGry = "";
+            if (kolorGracza == 1)
+            {
+                typGry = Gra.getInstance().typBialych;
+            }
+            else
+            {
+                typGry = Gra.getInstance().typCzarnych;
+            }
+
             int iloscPionkowB = 0;
             int iloscPionkowC = 0;
 
@@ -444,14 +454,42 @@ namespace MlynekV2.Services
                         ilosc++;
                         if (indexW == 3 && indexW == 3)
                         {
-                            punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                            switch (typGry)
+                            {
+                                case "KomputerH1":
+                                    punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                case "KomputerH2":
+                                    punkty += dodajPunktyH2(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                case "KomputerH3":
+                                    punkty += dodajPunktyH3(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                default:
+                                    punkty += 0;
+                                    break;
+                            }
                             ilosc = 0;
                             iloscBialychWLini = 0;
                             iloscCzarnychWLini = 0;
                         }
                     }
                 }
-                punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                switch (typGry)
+                {
+                    case "KomputerH1":
+                        punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    case "KomputerH2":
+                        punkty += dodajPunktyH2(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    case "KomputerH3":
+                        punkty += dodajPunktyH3(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    default:
+                        punkty += 0;
+                        break;
+                }
             }
 
             for (int indexW = 0; indexW < 7; indexW++)
@@ -474,36 +512,56 @@ namespace MlynekV2.Services
                         ilosc++;
                         if (indexW == 3 && indexW == 3)
                         {
-                            punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                            switch (typGry)
+                            {
+                                case "KomputerH1":
+                                    punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                case "KomputerH2":
+                                    punkty += dodajPunktyH2(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                case "KomputerH3":
+                                    punkty += dodajPunktyH3(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                                    break;
+                                default:
+                                    punkty += 0;
+                                    break;
+                            }
                             ilosc = 0;
                             iloscBialychWLini = 0;
                             iloscCzarnychWLini = 0;
                         }
                     }
                 }
-                punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                switch (typGry)
+                {
+                    case "KomputerH1":
+                        punkty += dodajPunktyH1(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    case "KomputerH2":
+                        punkty += dodajPunktyH2(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    case "KomputerH3":
+                        punkty += dodajPunktyH3(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
+                        break;
+                    default:
+                        punkty += 0;
+                        break;
+                }
             }
 
-            string typGry = "";
-            if (kolorGracza == 1)
-            {
-                typGry = Gra.getInstance().typBialych;
-            }
-            else
-            {
-                typGry = Gra.getInstance().typCzarnych;
-            }
+
 
             switch (typGry)
             {
                 case "KomputerH1":
-                    punkty += H1IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB);
+                    punkty += H1IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB, iloscMozliwychRuchow, poleDoSprawdzenia);
                     break;
                 case "KomputerH2":
-                    punkty += H2IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB);
+                    punkty += H2IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB, iloscMozliwychRuchow, poleDoSprawdzenia);
                     break;
                 case "KomputerH3":
-                    punkty += H3IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB);
+                    punkty += H3IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB, iloscMozliwychRuchow, poleDoSprawdzenia);
                     break;
                 default:
                     punkty += 0;
@@ -513,72 +571,235 @@ namespace MlynekV2.Services
             return punkty;
         }
 
-        public int dodajPunkty(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
+        public int dodajPunktyH1(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
         {
-            int mode = 0;
+            int punkty = 0;
             if (iloscBialychWLini == 3)
             {
-                mode = 1;
-            }
-            else
-            {
-                if (iloscBialychWLini == 2 && iloscCzarnychWLini == 1)
+                if (kolorGracza == 1)
                 {
-                    mode = 2;
+                    punkty += 6;
                 }
                 else
                 {
-                    if (iloscBialychWLini == 1 && iloscCzarnychWLini == 2)
-                    {
-                        mode = 3;
-                    }
-                    else
-                    {
-                        if (iloscCzarnychWLini == 3)
-                        {
-                            mode = 4;
-                        }else
-                        {
-                            if(iloscBialychWLini == 2 && iloscCzarnychWLini == 0)
-                            {
-                                mode = 5;
-                            }else
-                            {
-                                if (iloscBialychWLini == 0 && iloscCzarnychWLini == 2)
-                                {
-                                    mode = 6;
-                                }
-                            }
-                        }
-                    }
-                }     
+                    punkty -= 6;
+                }
             }
 
-            string typGry = "";
-            if (kolorGracza == 1)
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 1)
             {
-                 typGry = Gra.getInstance().typBialych;
-            }
-            else
-            {
-                 typGry = Gra.getInstance().typCzarnych;
-            }
-
-            switch (typGry)
-            {
-                case "KomputerH1":
-                    return H1(mode, kolorGracza);
-                case "KomputerH2":
-                    return H2(mode, kolorGracza);
-                case "KomputerH3":
-                    return H2(mode, kolorGracza);
-                default:
-                    return 0;
+                if (kolorGracza == 1)
+                {
+                    punkty -= 1;
+                }
+                else
+                {
+                    punkty += 10;
+                }
             }
 
+            if (iloscBialychWLini == 1 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 10;
+                }
+                else
+                {
+                    punkty -= 1;
+                }
+            }
+
+            if (iloscCzarnychWLini == 3)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 6;
+                }
+                else
+                {
+                    punkty += 6;
+                }
+            }
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 0)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 3;
+                }
+                else
+                {
+                    punkty -= 3;
+                }
+            }
+            if (iloscBialychWLini == 0 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 3;
+                }
+                else
+                {
+                    punkty += 3;
+                }
+            }
+
+            return punkty;
         }
 
-        public int H1IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB)
+        public int dodajPunktyH2(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
+        {
+            int punkty = 0;
+            if (iloscBialychWLini == 3)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 15;
+                }
+                else
+                {
+                    punkty -= 20;
+                }
+            }
+
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 1)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 0;
+                }
+                else
+                {
+                    punkty += 25;
+                }
+            }
+
+            if (iloscBialychWLini == 1 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 25;
+                }
+                else
+                {
+                    punkty -= 0;
+                }
+            }
+
+            if (iloscCzarnychWLini == 3)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 20;
+                }
+                else
+                {
+                    punkty += 15;
+                }
+            }
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 0)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 20;
+                }
+                else
+                {
+                    punkty -= -20;
+                }
+            }
+            if (iloscBialychWLini == 0 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 20;
+                }
+                else
+                {
+                    punkty += 20;
+                }
+            }
+
+            return punkty;
+        }
+
+        public int dodajPunktyH3(int ilosc, int iloscBialychWLini, int iloscCzarnychWLini, int kolorGracza)
+        {
+            int punkty = 0;
+            if (iloscBialychWLini == 3)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 15;
+                }
+                else
+                {
+                    punkty -= 5;
+                }
+            }
+
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 1)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 25;
+                }
+                else
+                {
+                    punkty += 5;
+                }
+            }
+
+            if (iloscBialychWLini == 1 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 25;
+                }
+                else
+                {
+                    punkty -= 5;
+                }
+            }
+
+            if (iloscCzarnychWLini == 3)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 15;
+                }
+                else
+                {
+                    punkty += 5;
+                }
+            }
+            if (iloscBialychWLini == 2 && iloscCzarnychWLini == 0)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty += 20;
+                }
+                else
+                {
+                    punkty -= 3;
+                }
+            }
+            if (iloscBialychWLini == 0 && iloscCzarnychWLini == 2)
+            {
+                if (kolorGracza == 1)
+                {
+                    punkty -= 20;
+                }
+                else
+                {
+                    punkty += 3;
+                }
+            }
+
+            return punkty;
+        }
+
+        public int H1IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB, int iloscMozliwychRuchow, Pole poleDoSprawdzenia)
         {
             var punkty = 0;
             if (kolorGracza == 1)
@@ -592,6 +813,14 @@ namespace MlynekV2.Services
                 {
                     punkty += 100;
                 }
+                if((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
+                }
             }
             else
             {
@@ -604,285 +833,140 @@ namespace MlynekV2.Services
                 {
                     punkty += 100;
                 }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
+                }
             }
             return punkty;
         }
 
-        public int H2IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB)
+        public int H2IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB, int iloscMozliwychRuchow, Pole poleDoSprawdzenia)
         {
             var punkty = 0;
             if (kolorGracza == 1)
             {
-                if (iloscPionkowB <= 3)
+                if (iloscPionkowB < 3)
                 {
                     punkty -= 100;
                 }
+                if (iloscPionkowB == 3)
+                {
+                    punkty -= 50;
+                }
                 punkty += iloscPionkowB;
-                if (iloscPionkowC < 2)
+                if (iloscPionkowC < 3)
                 {
                     punkty += 100;
+                }
+                if (iloscPionkowC == 3)
+                {
+                    punkty += 50;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
                 }
             }
             else
             {
-                if (iloscPionkowC <= 3)
+                if (iloscPionkowB < 3)
+                {
+                    punkty += 100;
+                }
+                if (iloscPionkowB == 3)
+                {
+                    punkty += 50;
+                }
+                punkty += iloscPionkowB;
+                if (iloscPionkowC < 3)
                 {
                     punkty -= 100;
                 }
-                punkty += iloscPionkowC;
-                if (iloscPionkowB < 2)
+                if (iloscPionkowC == 3)
                 {
-                    punkty += 100;
+                    punkty -= 50;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
                 }
             }
             return punkty;
         }
 
-        public int H3IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB)
+        public int H3IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB, int iloscMozliwychRuchow, Pole poleDoSprawdzenia)
         {
             var punkty = 0;
             if (kolorGracza == 1)
             {
-                if (iloscPionkowB <= 3)
+                if (iloscPionkowB < 3)
                 {
                     punkty -= 100;
                 }
+                if (iloscPionkowB == 3)
+                {
+                    punkty -= 50;
+                }
                 punkty += iloscPionkowB;
-                if (iloscPionkowC < 2)
+                if (iloscPionkowC < 3)
                 {
                     punkty += 100;
+                }
+                if (iloscPionkowC == 3)
+                {
+                    punkty += 50;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
                 }
             }
             else
             {
-                if (iloscPionkowC <= 3)
-                {
-                    punkty -= 100;
-                }
-                punkty += iloscPionkowC;
-                if (iloscPionkowB < 2)
+                if (iloscPionkowB < 3)
                 {
                     punkty += 100;
                 }
+                if (iloscPionkowB == 3)
+                {
+                    punkty += 50;
+                }
+                punkty += iloscPionkowB;
+                if (iloscPionkowC < 3)
+                {
+                    punkty -= 100;
+                }
+                if (iloscPionkowC == 3)
+                {
+                    punkty -= 50;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(1, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty += 40;
+                }
+                if ((Gra.getInstance().znajdzMozliwePrzesuniecia(2, poleDoSprawdzenia)).Count < 2)
+                {
+                    punkty -= 40;
+                }
             }
             return punkty;
         }
-
-        public int H1(int mode, int kolorGracza)
-        {
-            var punkty = 0;
-            switch (mode)
-            {
-                case 1:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 6;
-                    }
-                    else
-                    {
-                        punkty = -5;
-                    }
-                    break;
-                case 2:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -1;
-                    }
-                    else
-                    {
-                        punkty = 10;
-                    }
-                    break;
-                case 3:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 10;
-                    }
-                    else
-                    {
-                        punkty = -1;
-                    }
-                    break;
-                case 4:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -5;
-                    }
-                    else
-                    {
-                        punkty = 6;
-                    }
-                    break;
-                case 5:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 3;
-                    }
-                    else
-                    {
-                        punkty = -3;
-                    }
-                    break;
-                case 6:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -3;
-                    }
-                    else
-                    {
-                        punkty = 3;
-                    }
-                    break;
-                default:
-                    return 0;
-            }
-            return punkty;
-        }
-
-        public int H2(int mode, int kolorGracza)
-        {
-            var punkty = 0;
-            switch (mode)
-            {
-                case 1:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 6;
-                    }
-                    else
-                    {
-                        punkty = -5;
-                    }
-                    break;
-                case 2:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -1;
-                    }
-                    else
-                    {
-                        punkty = 10;
-                    }
-                    break;
-                case 3:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 10;
-                    }
-                    else
-                    {
-                        punkty = -1;
-                    }
-                    break;
-                case 4:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -5;
-                    }
-                    else
-                    {
-                        punkty = 6;
-                    }
-                    break;
-                case 5:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 3;
-                    }
-                    else
-                    {
-                        punkty = -3;
-                    }
-                    break;
-                case 6:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -3;
-                    }
-                    else
-                    {
-                        punkty = 3;
-                    }
-                    break;
-                default:
-                    return 0;
-            }
-            return punkty;
-
-        }
-
-        public int H3(int mode, int kolorGracza)
-        {
-            var punkty = 0;
-            switch (mode)
-            {
-                case 1:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 6;
-                    }
-                    else
-                    {
-                        punkty = -5;
-                    }
-                    break;
-                case 2:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -1;
-                    }
-                    else
-                    {
-                        punkty = 10;
-                    }
-                    break;
-                case 3:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 10;
-                    }
-                    else
-                    {
-                        punkty = -1;
-                    }
-                    break;
-                case 4:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -5;
-                    }
-                    else
-                    {
-                        punkty = 6;
-                    }
-                    break;
-                case 5:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = 3;
-                    }
-                    else
-                    {
-                        punkty = -3;
-                    }
-                    break;
-                case 6:
-                    if (kolorGracza == 1)
-                    {
-                        punkty = -3;
-                    }
-                    else
-                    {
-                        punkty = 3;
-                    }
-                    break;
-                default:
-                    return 0;
-            }
-            return punkty;
-
-        }
-
     }
-
 }
