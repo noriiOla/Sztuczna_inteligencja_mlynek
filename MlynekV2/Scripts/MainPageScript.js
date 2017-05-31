@@ -28,7 +28,11 @@
             dataType: 'json',
             data: {
                 gracz1: gracz1,
-                gracz2: gracz2
+                gracz2: gracz2,
+                typBialych: $('#graczBialy').find(":selected").text(),
+                typCzarnych: $('#graczCzarny').find(":selected").text(),
+                poziom: $('#poziom').find(":selected").text(),
+                kolejnoscWezlow: $('#kolejnoscW').find(":selected").text()
             },
             success: function (msg) {
                 console.log(msg); console.log("koneic inincjacji");
@@ -214,14 +218,14 @@
                 $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
                 //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
-                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
                     game.kompZnajdzNajlepszyRucha("2", true);
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
                 // if gracz == kom then znajdzPionekDoPostawienia(ajax)
-                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
                     game.kompZnajdzNajlepszyRucha("1", false);
                 }
             }
@@ -231,14 +235,14 @@
                 $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
                 //if gracz == kom then znajdzPionekDoZabrania(ajax)
-                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
                     game.kompZnajdzNajlepszyRucha("1", true);
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");
                 // if gracz == kom then znajdzPionekDoPostawienia(ajax)
-                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
                     game.kompZnajdzNajlepszyRucha("2", false);
                 }
             }
@@ -285,18 +289,18 @@
                     $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                     mlynek = true;
                     //if gracz == kom then znajdzPionekDoZabrania(ajax) wyslijkolor oraz wynikRuhu.czyJestMlynek
-                    if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                    if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
                         console.log("wywoluje");
                         game.kompZnajdzNajlepszyRucha("2", true);
                     }
                 } else {
-                    $('#infoLabel').html("Wygraly biale! BRAWO!");
+                    $('#infoLabel').html("Wygraly czarne! BRAWO!");
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
 
-                if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("1", false);
                 }
@@ -312,18 +316,18 @@
                     $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                     mlynek = true;
 
-                    if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+                    if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
                         console.log("wywoluje");
                         game.kompZnajdzNajlepszyRucha("1", true);
                     }
                 } else {
-                    $('#infoLabel').html("Wygraly czarne! BRAWO!");
+                    $('#infoLabel').html("Wygraly biale! BRAWO!");
                 }
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");
 
-                if ($('#graczCzarny').find(":selected").text() === 'Komputer') {
+                if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
                     console.log("wywoluje");
                     game.kompZnajdzNajlepszyRucha("2", false);
                 }
@@ -342,7 +346,7 @@ window.onload = function () {
         promise.then(function () {
             console.log("wywoluje pierwszy ruch");
             $('#infoLabel').html("Biale");
-            if ($('#graczBialy').find(":selected").text() === 'Komputer') {
+            if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
                 game.kompZnajdzNajlepszyRucha("1", false);
             }
         });

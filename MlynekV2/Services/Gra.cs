@@ -11,8 +11,12 @@ namespace MlynekV2.Services
         public Gracz gracz1;
         public Gracz gracz2;
         public static Gra gra;
-        public static List<ObiektZwracanyPrzezAlfaBeta> dwaOstPosunieciaB { get; set; }
-        public static List<ObiektZwracanyPrzezAlfaBeta> dwaOstPosunieciaC { get; set; }
+        public List<ObiektZwracanyPrzezAlfaBeta> dwaOstPosunieciaB { get; set; }
+        public List<ObiektZwracanyPrzezAlfaBeta> dwaOstPosunieciaC { get; set; }
+        public string typBialych { get; set; }
+        public string typCzarnych { get; set; }
+        public string poziom { get; set; }
+        public string kolejnoscWezlow { get; set; }
 
         private Gra()
         {
@@ -24,18 +28,6 @@ namespace MlynekV2.Services
             dwaOstPosunieciaB = new List<ObiektZwracanyPrzezAlfaBeta>();
             dwaOstPosunieciaC = new List<ObiektZwracanyPrzezAlfaBeta>();
         }
-
-        //public static bool wystepujeWLiscie(int kolor, string noweIdPionka, Punkt miejscePionkaDoUsuniecia, Punkt miejscePionkaDoPostawienia)
-        //{
-        //    if(kolor == 1)
-        //    {
-        //        return jestWLiscie(dwaOstPosunieciaB, kolor, noweIdPionka, miejscePionkaDoUsuniecia, miejscePionkaDoPostawienia);
-        //    }
-        //    else
-        //    {
-        //        return jestWLiscie(dwaOstPosunieciaC, kolor, noweIdPionka, miejscePionkaDoUsuniecia, miejscePionkaDoPostawienia);
-        //    }
-        //}
 
         public bool ruchSiePowtorzyl()
         {
@@ -52,17 +44,13 @@ namespace MlynekV2.Services
             return false;
         }
 
-        //public static bool jestWLiscie(List<ObiektZwracanyPrzezAlfaBeta> lista, int kolor, string noweIdPionka, Punkt miejscePionkaDoUsuniecia, Punkt miejscePionkaDoPostawienia)
-        //{
-        //    foreach (ObiektZwracanyPrzezAlfaBeta ruch in lista)
-        //    {
-        //        if (ruch.nazwaPionka.Equals(noweIdPionka) && ruch.miejscePionkaDoUsuniecia.x == miejscePionkaDoUsuniecia.x && ruch.miejscePionkaDoUsuniecia.y == miejscePionkaDoUsuniecia.y && ruch.miejscePionkaDoPostawienia.x == miejscePionkaDoPostawienia.x && ruch.miejscePionkaDoPostawienia.y == miejscePionkaDoPostawienia.y)
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
+        public void dodajZmienne(string typBialych, string typCzarnych, string poziom, string kolejnoscWezlow)
+        {
+            this.typBialych = typBialych;
+            this.typCzarnych = typCzarnych;
+            this.poziom = poziom;
+            this.kolejnoscWezlow = kolejnoscWezlow;
+        }
 
         public static void createNewInstance()
         { 

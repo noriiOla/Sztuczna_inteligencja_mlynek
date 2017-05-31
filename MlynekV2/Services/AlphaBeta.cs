@@ -11,7 +11,7 @@ namespace MlynekV2.Services
 
         public AlphaBeta(Pole pole)
         {
-            maxPoziom = 8;
+            maxPoziom = Convert.ToInt32(Gra.getInstance().poziom);
             this.pole = new Pole();
             for (int indexW = 0; indexW < 7; indexW++)
             {
@@ -484,15 +484,7 @@ namespace MlynekV2.Services
                 punkty += dodajPunkty(ilosc, iloscBialychWLini, iloscCzarnychWLini, kolorGracza);
             }
 
-            if (kolorGracza == 1)
-            {
-                punkty += iloscPionkowB;
-            }
-            else
-            {
-                punkty += iloscPionkowC;
-            }
-
+            punkty += H1IloscRuchow(kolorGracza, iloscPionkowC, iloscPionkowB);
             return punkty;
         }
 
@@ -539,67 +531,109 @@ namespace MlynekV2.Services
             return H1(mode, kolorGracza);
         }
 
+        public int H1IloscRuchow(int kolorGracza, int iloscPionkowC, int iloscPionkowB)
+        {
+            var punkty = 0;
+            if (kolorGracza == 1)
+            {
+                if (iloscPionkowB <= 3)
+                {
+                    punkty -= 100;
+                }
+                punkty += iloscPionkowB;
+                if (iloscPionkowC < 2)
+                {
+                    punkty += 100;
+                }
+            }
+            else
+            {
+                if (iloscPionkowC <= 3)
+                {
+                    punkty -= 100;
+                }
+                punkty += iloscPionkowC;
+                if (iloscPionkowB < 2)
+                {
+                    punkty += 100;
+                }
+            }
+            return punkty;
+        }
+
         public int H1(int mode, int kolorGracza)
         {
+            var punkty = 0;
             switch (mode)
             {
                 case 1:
-                    if(kolorGracza == 1)
+                    if (kolorGracza == 1)
                     {
-                        return 6;
-                    }else
-                    {
-                        return -5;
+                        punkty = 6;
                     }
+                    else
+                    {
+                        punkty = -5;
+                    }
+                    break;
                 case 2:
                     if (kolorGracza == 1)
                     {
-                        return -1;
+                        punkty = -1;
                     }
                     else
                     {
-                        return 10;
+                        punkty = 10;
                     }
+                    break;
                 case 3:
                     if (kolorGracza == 1)
                     {
-                        return 10;
+                        punkty = 10;
                     }
                     else
                     {
-                        return -1;
+                        punkty = -1;
                     }
+                    break;
                 case 4:
                     if (kolorGracza == 1)
                     {
-                        return -5;
+                        punkty = -5;
                     }
                     else
                     {
-                        return 6;
+                        punkty = 6;
                     }
+                    break;
                 case 5:
                     if (kolorGracza == 1)
                     {
-                        return 3;
+                        punkty = 3;
                     }
                     else
                     {
-                        return -3;
+                        punkty = -3;
                     }
+                    break;
                 case 6:
                     if (kolorGracza == 1)
                     {
-                        return -3;
+                        punkty = -3;
                     }
                     else
                     {
-                        return 3;
+                        punkty = 3;
                     }
+                    break;
                 default:
                     return 0;
-
             }
+
+            
+
+            return punkty;
+
         }
     }
 
