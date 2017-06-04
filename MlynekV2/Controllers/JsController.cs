@@ -58,7 +58,6 @@ namespace MlynekV2.Controllers
         public string kompZnajdzRuch(string kolor, bool jestMlynek)
         {
             ObiektZwracanyPrzezAlfaBeta ruchKomp = Gra.getInstance().kompZnajdzNajlepszeMiejsceIPionek(getGracz(kolor), jestMlynek);
-           // Pole ruchKomp = Gra.getInstance().kompZnajdzNajlepszeMiejsceIPionek(getGracz(kolor), jestMlynek);
             return new JsonTransformService().SerializeToString(ruchKomp);
         }
     }

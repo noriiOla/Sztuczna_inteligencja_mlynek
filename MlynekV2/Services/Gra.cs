@@ -17,7 +17,7 @@ namespace MlynekV2.Services
         public string typCzarnych { get; set; }
         public string poziom { get; set; }
         public string kolejnoscWezlow { get; set; }
-
+        public int iloscPowtElem = 0;
         private Gra()
         {
             this.pole = new Pole();
@@ -29,16 +29,41 @@ namespace MlynekV2.Services
             dwaOstPosunieciaC = new List<ObiektZwracanyPrzezAlfaBeta>();
         }
 
-        public bool ruchSiePowtorzyl()
+        public bool ruchSiePowtorzyl(ObiektZwracanyPrzezAlfaBeta ruch)                              
         {
-            if(dwaOstPosunieciaB.Count == 2 && dwaOstPosunieciaC.Count == 2)
+            if (ruch != null)                                                   ////////////////////////////////////
             {
-                if(dwaOstPosunieciaB[0].miejscePionkaDoPostawienia.x == dwaOstPosunieciaB[1].miejscePionkaDoUsuniecia.x 
-                    && dwaOstPosunieciaB[0].miejscePionkaDoPostawienia.y == dwaOstPosunieciaB[1].miejscePionkaDoUsuniecia.y
-                    && dwaOstPosunieciaC[0].miejscePionkaDoPostawienia.x == dwaOstPosunieciaC[1].miejscePionkaDoUsuniecia.x
-                    && dwaOstPosunieciaC[0].miejscePionkaDoPostawienia.y == dwaOstPosunieciaC[1].miejscePionkaDoUsuniecia.y)
+                if ((ruch.nazwaPionka.ToString()).Equals("b"))
                 {
-                    return true;
+                    foreach (ObiektZwracanyPrzezAlfaBeta wczesnRuch in dwaOstPosunieciaB)
+                    {
+                        if (wczesnRuch.miejscePionkaDoPostawienia.x == ruch.miejscePionkaDoUsuniecia.x
+                          && wczesnRuch.miejscePionkaDoPostawienia.y == ruch.miejscePionkaDoUsuniecia.y
+                          || (wczesnRuch.miejscePionkaDoPostawienia.x == ruch.miejscePionkaDoPostawienia.x
+                          && wczesnRuch.miejscePionkaDoPostawienia.y == ruch.miejscePionkaDoPostawienia.y
+                          && wczesnRuch.miejscePionkaDoUsuniecia.x == ruch.miejscePionkaDoUsuniecia.x
+                          && wczesnRuch.miejscePionkaDoUsuniecia.y == ruch.miejscePionkaDoUsuniecia.y
+                          ))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (ObiektZwracanyPrzezAlfaBeta wczesnRuch in dwaOstPosunieciaC)
+                    {
+                        if (wczesnRuch.miejscePionkaDoPostawienia.x == ruch.miejscePionkaDoUsuniecia.x
+                           && wczesnRuch.miejscePionkaDoPostawienia.y == ruch.miejscePionkaDoUsuniecia.y
+                           || (wczesnRuch.miejscePionkaDoPostawienia.x == ruch.miejscePionkaDoPostawienia.x
+                           && wczesnRuch.miejscePionkaDoPostawienia.y == ruch.miejscePionkaDoPostawienia.y
+                           && wczesnRuch.miejscePionkaDoUsuniecia.x == ruch.miejscePionkaDoUsuniecia.x
+                           && wczesnRuch.miejscePionkaDoUsuniecia.y == ruch.miejscePionkaDoUsuniecia.y
+                           ))
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
@@ -71,7 +96,9 @@ namespace MlynekV2.Services
         {
             int correctX = -1;
             int correctY = -1;
-
+            gracz.iloscPionkowNieWylozonych--;
+            int numerPionka = Convert.ToInt32(nazwaPionka[1].ToString());
+            gracz.nieUzytePionki.Remove(numerPionka);
             if (gracz.nieUzytePionki.Contains(Convert.ToInt32(nazwaPionka[1])))
             {
                 gracz.nieUzytePionki.Remove(Convert.ToInt32(nazwaPionka[1]));
@@ -101,6 +128,7 @@ namespace MlynekV2.Services
                 this.pole.plansza[correctX, correctY].zajete = true;
                 this.pole.plansza[correctX, correctY].kolorGracza = gracz.kolor;
                 this.pole.plansza[correctX, correctY].nazwaPionka = nazwaPionka;
+                
                 usunZPlanszyInformacjeOStarymPunkcie(staryPunkt);
                 return new WynikRuchu(new Punkt(this.pole.plansza[correctX, correctY].x, this.pole.plansza[correctX, correctY].y), powstalMlynek(correctX, correctY, gracz.kolor, this.pole));
             }
@@ -140,38 +168,52 @@ namespace MlynekV2.Services
 
             for(int i=0; i<7; i++)
             {
-                if(poleDoSprawdzenia.plansza[x, i].kolorGracza == kolorGracza && poleDoSprawdzenia.plansza[x, i].zajete && poleDoSprawdzenia.plansza[x, i].dopuszczalne)
+
+                if (poleDoSprawdzenia.plansza[x, i].kolorGracza == kolorGracza && poleDoSprawdzenia.plansza[x, i].zajete && poleDoSprawdzenia.plansza[x, i].dopuszczalne)
                 {
                     ilosc++;
-                    if(ilosc == 3)
+
+                    if (x == 3 && y > 3 && i < 3)
                     {
+                        ilosc = 0;
+                    }
+
+                    if (ilosc == 3)
+                    {       
                         return true;
                     }
- 
+
                 }
-                if (x == 3 && i == 3)
-                {
-                    ilosc = 0;
-                }
+                //if (x == 3 && i == 3)
+                //{
+                //    ilosc = 0;
+                //}
             }
 
             ilosc = 0;
 
             for (int i = 0; i < 7; i++)
             {
+               
                 if (poleDoSprawdzenia.plansza[i, y].kolorGracza == kolorGracza && poleDoSprawdzenia.plansza[i, y].zajete && poleDoSprawdzenia.plansza[i, y].dopuszczalne)
                 {
                     ilosc++;
-                    if (ilosc == 3)
+                    if (y == 3 && x > 3 && i < 3)
                     {
-                        return true;
+                        ilosc = 0;
+                    }
+
+                    if (ilosc == 3)
+                    {              
+                        return true; 
                     }
 
                 }
-                if (y == 3 && i == 3)
-                {
-                    ilosc = 0;
-                }
+                //if (y == 3 && i == 3)
+                //{
+                //    ilosc = 0;
+
+                //}
             }
 
             return false;
@@ -325,10 +367,10 @@ namespace MlynekV2.Services
 
             if (stanGry.Equals("mlynek"))
             {
+                this.pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
                 dwaOstPosunieciaC.Clear();
                 dwaOstPosunieciaB.Clear();
-                ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
-                this.pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].zajete = false;
+                ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;    
                 int x = (int)ruch.miejscePionkaDoUsuniecia.x;
                 int y = (int)ruch.miejscePionkaDoUsuniecia.y;
                 ruch.miejscePionkaDoUsuniecia.x = pole.plansza[x, y].x;
@@ -359,40 +401,55 @@ namespace MlynekV2.Services
 
             if (stanGry.Equals("ruch"))
             {
-                if (ruchSiePowtorzyl())
+                if(ruch == null)////////////////////////////////////////////////////////
                 {
-                    List<Ruch> listaMozliwychRuchow = znajdzMozliwePrzesuniecia(gracz.kolor, this.pole);
-                    ObiektZwracanyPrzezAlfaBeta losowyObiekt = ruch;
-                    string noweIdPionka = ruch.nazwaPionka;
-                    Punkt nowyPunktDoPostawienia = ruch.miejscePionkaDoPostawienia;
-
-                    if (listaMozliwychRuchow.Count == 0)
-                    {
-                        ruch.miejscePionkaDoPostawienia = null;
-                        ruch.miejscePionkaDoUsuniecia = null;
-                        ruch.nazwaPionka = "";
-                        return ruch;
-                    }
-
-                    Random rand = new Random();
-                    rand.Next(0, listaMozliwychRuchow.Count);
-                    int idElemntuDoUsuniecia = rand.Next(0, listaMozliwychRuchow.Count);
-                    int idNowegoMiejsca = rand.Next(0, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscaNaKtoreMozeSieRuszyc.Count);
-                    ruch = new ObiektZwracanyPrzezAlfaBeta(0, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscePionkaDoUsniecia, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscaNaKtoreMozeSieRuszyc[idNowegoMiejsca]);
-
+                    ruch.miejscePionkaDoPostawienia = null;
+                    ruch.miejscePionkaDoUsuniecia = null;
+                    ruch.nazwaPionka = "";
+                    return ruch;
                 }
-            
+
+                ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
+                if (ruchSiePowtorzyl(ruch))
+                {
+                    iloscPowtElem++;
+                    if (iloscPowtElem >= 4)
+                    {
+                        List<Ruch> listaMozliwychRuchow = znajdzMozliwePrzesuniecia(gracz.kolor, this.pole);
+                        ObiektZwracanyPrzezAlfaBeta losowyObiekt = ruch;
+                        string noweIdPionka = ruch.nazwaPionka;
+                        Punkt nowyPunktDoPostawienia = ruch.miejscePionkaDoPostawienia;
+
+                        if (listaMozliwychRuchow.Count == 0)
+                        {
+                            ruch.miejscePionkaDoPostawienia = null;
+                            ruch.miejscePionkaDoUsuniecia = null;
+                            ruch.nazwaPionka = "";
+                            return ruch;
+                        }
+
+                        Random rand = new Random();
+                        rand.Next(0, listaMozliwychRuchow.Count);
+                        int idElemntuDoUsuniecia = rand.Next(0, listaMozliwychRuchow.Count);
+                        int idNowegoMiejsca = rand.Next(0, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscaNaKtoreMozeSieRuszyc.Count);
+                        ruch = new ObiektZwracanyPrzezAlfaBeta(0, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscePionkaDoUsniecia, listaMozliwychRuchow[idElemntuDoUsuniecia].miejscaNaKtoreMozeSieRuszyc[idNowegoMiejsca]);
+                    }
+                }else
+                {
+                    iloscPowtElem = 0;
+                }
+
                 ruch.nazwaPionka = pole.plansza[(int)ruch.miejscePionkaDoUsuniecia.x, (int)ruch.miejscePionkaDoUsuniecia.y].nazwaPionka;
                 if (gracz.kolor == 1)
                 {
-                    if (dwaOstPosunieciaB.Count == 2)
+                    if (dwaOstPosunieciaB.Count == 4)
                     {
                         dwaOstPosunieciaB.RemoveAt(0);
                     }
                     dwaOstPosunieciaB.Add(new ObiektZwracanyPrzezAlfaBeta(0, new Punkt(ruch.miejscePionkaDoUsuniecia.x, ruch.miejscePionkaDoUsuniecia.y), new Punkt(ruch.miejscePionkaDoPostawienia.x, ruch.miejscePionkaDoPostawienia.y), ruch.nazwaPionka));
                 } else
                 {
-                    if(dwaOstPosunieciaC.Count == 2)
+                    if(dwaOstPosunieciaC.Count == 4)
                     {
                         dwaOstPosunieciaC.RemoveAt(0);
                     }
