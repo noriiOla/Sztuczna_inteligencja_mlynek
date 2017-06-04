@@ -77,13 +77,16 @@ namespace MlynekV2.Services
                             }
                         }
                         pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;
-                        if (value.maxValue > beta)
+                        if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
                         {
-                            return value;
-                        }
-                        if (value.maxValue > alpha)
-                        {
-                            alpha = value.maxValue;
+                            if (value.maxValue > beta)
+                            {
+                                return value;
+                            }
+                            if (value.maxValue > alpha)
+                            {
+                                alpha = value.maxValue;
+                            }
                         }
 
                     }
@@ -129,13 +132,16 @@ namespace MlynekV2.Services
                                     }
                                 }
                                 pole.plansza[(int)punkt.x, (int)punkt.y].zajete = false;
-                                if (value.maxValue > beta)
+                                if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
                                 {
-                                    return value;
-                                }
-                                if (value.maxValue > alpha)
-                                {
-                                    alpha = value.maxValue;
+                                    if (value.maxValue > beta)
+                                    {
+                                        return value;
+                                    }
+                                    if (value.maxValue > alpha)
+                                    {
+                                        alpha = value.maxValue;
+                                    }
                                 }
                             }
                             pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = true;
@@ -176,13 +182,16 @@ namespace MlynekV2.Services
                                     }
                                 }
                                 pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;
-                                if (value.maxValue > beta)
+                                if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
                                 {
-                                    return value;
-                                }
-                                if (value.maxValue > alpha)
-                                {
-                                    alpha = value.maxValue;
+                                    if (value.maxValue > beta)
+                                    {
+                                        return value;
+                                    }
+                                    if (value.maxValue > alpha)
+                                    {
+                                        alpha = value.maxValue;
+                                    }
                                 }
                             }
                         }
@@ -253,18 +262,19 @@ namespace MlynekV2.Services
                                 }
                             }
                         }
-
-                        if (value.maxValue < alpha)
+                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;
+                        if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
                         {
-                            return value;
+                            if (value.maxValue < alpha)
+                            {
+                                return value;
 
+                            }
+                            if (value.maxValue < beta)
+                            {
+                                beta = value.maxValue;
+                            }
                         }
-                        if (value.maxValue < beta)
-                        {
-                            beta = value.maxValue;
-                        }
-
-                        pole.plansza[(int)ruch.x, (int)ruch.y].zajete = false;         
                     }
                 }
                 else
@@ -308,18 +318,19 @@ namespace MlynekV2.Services
                                         value = wynikMax;
                                     }
                                 }
-
-                                if (value.maxValue < alpha)
-                                {
-                                    return value;
-
-                                }
-                                if (value.maxValue < beta)
-                                {
-                                    beta = value.maxValue;
-                                }
-
                                 pole.plansza[(int)punkt.x, (int)punkt.y].zajete = false;
+                                if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
+                                {
+                                    if (value.maxValue < alpha)
+                                    {
+                                        return value;
+
+                                    }
+                                    if (value.maxValue < beta)
+                                    {
+                                        beta = value.maxValue;
+                                    }
+                                }
                             }
                             pole.plansza[(int)ruch.miejscePionkaDoUsniecia.x, (int)ruch.miejscePionkaDoUsniecia.y].zajete = true;
                         }
@@ -359,14 +370,17 @@ namespace MlynekV2.Services
                                     }
                                 }
                                 pole.plansza[(int)ruch.x, (int)ruch.y].zajete = true;
-                                if (value.maxValue < alpha)
+                                if (Gra.getInstance().algorytm.Equals("AlphaBeta"))
                                 {
-                                    return value;
+                                    if (value.maxValue < alpha)
+                                    {
+                                        return value;
 
-                                }
-                                if (value.maxValue < beta)
-                                {
-                                    beta = value.maxValue;
+                                    }
+                                    if (value.maxValue < beta)
+                                    {
+                                        beta = value.maxValue;
+                                    }
                                 }
                             }
                         }

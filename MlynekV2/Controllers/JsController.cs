@@ -15,10 +15,10 @@ namespace MlynekV2.Controllers
             return View();
         }
 
-        public string inicjuj(int gracz1, int gracz2, string typBialych, string typCzarnych, string poziom, string kolejnoscWezlow)
+        public string inicjuj(int gracz1, int gracz2, string typBialych, string typCzarnych, string poziom, string kolejnoscWezlow, string algorytm)
         {
             Gra.createNewInstance();
-            Gra.getInstance().dodajZmienne(typBialych, typCzarnych, poziom, kolejnoscWezlow);
+            Gra.getInstance().dodajZmienne(typBialych, typCzarnych, poziom, kolejnoscWezlow, algorytm);
             return "true"; 
         }
 

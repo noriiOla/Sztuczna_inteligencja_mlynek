@@ -33,7 +33,8 @@
                 typBialych: $('#graczBialy').find(":selected").text(),
                 typCzarnych: $('#graczCzarny').find(":selected").text(),
                 poziom: $('#poziom').find(":selected").text(),
-                kolejnoscWezlow: $('#kolejnoscW').find(":selected").text()
+                kolejnoscWezlow: $('#kolejnoscW').find(":selected").text(),
+                algorytm: $('#algorytm').find(":selected").text()
             },
             success: function (msg) {
                 console.log("koneic inincjacji");
@@ -222,11 +223,7 @@
             if (wynikRuchu.czyJestMlynek) {
                 $('#infoLabel').html("Mlynek czarnych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
-     
-                //if ($('#graczCzarny').find(":selected").text() !== 'Czlowiek') {
-                //    console.log("szukam miejsca dla czaarnych")
-                //    game.kompZnajdzNajlepszyRucha("2", true);
-                //}
+
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc - 1;
                 $('#infoLabel').html("Biale");
@@ -242,9 +239,6 @@
                 $('#infoLabel').html("Mlynek bialych, kliknij na pionek przeciwnika ktory chcesz zabrac");
                 mlynek = true;
 
-                //if ($('#graczBialy').find(":selected").text() !== 'Czlowiek') {
-                //    game.kompZnajdzNajlepszyRucha("1", true);
-                //}
             } else {
                 numerGraczaKtoryMaSieRuszyc = numerGraczaKtoryMaSieRuszyc + 1;
                 $('#infoLabel').html("Czarne");

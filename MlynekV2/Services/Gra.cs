@@ -17,7 +17,9 @@ namespace MlynekV2.Services
         public string typCzarnych { get; set; }
         public string poziom { get; set; }
         public string kolejnoscWezlow { get; set; }
+        public string algorytm { get; set; }
         public int iloscPowtElem = 0;
+
         private Gra()
         {
             this.pole = new Pole();
@@ -33,7 +35,7 @@ namespace MlynekV2.Services
         {
             if (ruch != null)                                                   ////////////////////////////////////
             {
-                if ((ruch.nazwaPionka.ToString()).Equals("b"))
+                if ((ruch.nazwaPionka[0].ToString()).Equals("b"))
                 {
                     foreach (ObiektZwracanyPrzezAlfaBeta wczesnRuch in dwaOstPosunieciaB)
                     {
@@ -69,12 +71,13 @@ namespace MlynekV2.Services
             return false;
         }
 
-        public void dodajZmienne(string typBialych, string typCzarnych, string poziom, string kolejnoscWezlow)
+        public void dodajZmienne(string typBialych, string typCzarnych, string poziom, string kolejnoscWezlow, string algorytm)
         {
             this.typBialych = typBialych;
             this.typCzarnych = typCzarnych;
             this.poziom = poziom;
             this.kolejnoscWezlow = kolejnoscWezlow;
+            this.algorytm = algorytm;
         }
 
         public static void createNewInstance()
